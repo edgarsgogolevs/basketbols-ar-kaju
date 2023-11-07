@@ -7,3 +7,5 @@
 * npm run serve
 
 If everything was successful, you can then run it via `Run and debug -> Run Script:serve`
+
+EDGAR - BOT - test
