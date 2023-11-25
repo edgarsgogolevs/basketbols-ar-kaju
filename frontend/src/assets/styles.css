@@ -1,0 +1,206 @@
+*,::before, ::after {
+  box-sizing: border-box;
+}
+:root {
+  --color-background: #282828;
+  --color-opacity-background: rgba(40, 40, 40, 0.98);
+  --color-input-background: #111827;
+  --color-backetball: #c81008;
+  --color-nav-background: #151515;
+  --color-nav-background-start: #e49b36;
+  --color-nav-background-end: #4f01ea;
+  --color-nav-border: #e49b36;
+  --color-nav-background-hover: #030303;
+
+  --color-text: #eee;
+  --color-description-text: #aaa;
+  --color-nav-text: #efa53b;
+
+
+
+  --size-nav-bar: 4rem;
+}
+
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  line-height: 1;
+  overflow: visible;
+}
+
+.ba {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+h1, p {
+  margin: 0;
+}
+main {
+  color: var(--color-text);
+}
+
+.ba-data {
+  font-weight: bold;
+  color: var(--color-text);
+}
+.ba-description {
+  color: var(--color-description-text);
+}
+
+
+.main-layout {
+  display: grid;
+  grid-template-columns: 4rem auto 4rem;
+  grid-template-rows: var(--size-nav-bar) 1fr auto;
+  grid-template-areas: "header header header"
+  "nav main aside"
+  "footer footer footer";
+  min-height: 100dvh;
+  color: var(--color-nav-text);
+  background-image: url('@/assets/background-image.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.main-layout>header {
+  grid-area: header;
+  position: fixed;
+  width: 100%;
+  height: var(--size-nav-bar);
+  top: 0;
+  z-index: 100;
+  background-color: var(--color-nav-background);
+  height: var(--size-nav-bar);
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: 20rem 1fr 20rem;
+  gap: 1rem;
+  color: var(--color-nav-text);
+}
+.main-layout>main {
+  grid-area: main;
+}
+
+.ba-main {
+  margin: 1rem;
+} 
+
+.ba-main-cover {
+  margin: 5rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ba-cover-form {
+  width: 35rem;
+  background-color: var(--color-opacity-background);
+  padding: 1rem 2rem 4em 2rem;
+}
+
+.ba-cover-text {
+  padding-bottom: 1rem;
+  color: var(--color-text);
+}
+.ba-cover-text h1{
+  padding: 1rem;
+}
+.ba-cover-text p{
+  padding: 1rem;
+}
+.ba-cover-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+.ba-main-nav-button {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center; 
+}
+.ba-main-nav-button i {
+  margin-left: 1rem;
+  background: linear-gradient(to right, var(--color-nav-background-start), var(--color-nav-background-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ba-main-nav-button:hover,
+.ba-main-small-nav-button:hover {
+  cursor: pointer;
+  background-color: var(--color-nav-background-hover);
+}
+.ba-main-small-nav-button {
+  height: var(--size-nav-bar);
+  width: 4rem;
+  display: grid;
+  align-items: center; 
+  justify-self: end;
+}
+
+.ba-nav-menu {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}
+
+.ba-page-header {
+  background-color: var(--color-background);
+}
+.ba-page-body {
+  background-color: var(--color-background);
+  display: flex;
+  gap: 0.5rem;
+}
+.ba-main-form {
+  display: block;
+
+}
+.ba-main-form>.ba-header {
+  padding: 1rem;
+  background-color: var(--color-background);
+}
+.ba-row {
+  background-color: var(--color-background);
+  padding: 1.5rem 3rem;
+
+  position: static;
+}
+.ba-nav-menu-button {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center; 
+  width: 15rem;
+  height: var(--size-nav-bar);
+  padding: 1rem;
+}
+
+.ba-nav-menu-button:hover {
+  cursor: pointer;
+  background-color: var(--color-nav-background-hover);
+}
+.ba-nav-menu-button.selected,
+.ba-main-nav-button.selected {
+  cursor: pointer;
+  background-color: var(--color-nav-background-hover);
+  border-bottom: 2px solid var(--color-nav-border);
+}
+
+.ba .ba-main-cover .main-logo::before {
+  font-size: 225px;
+  margin: 2rem;
+  background: linear-gradient(to left, var(--color-nav-background-start), var(--color-nav-background-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
