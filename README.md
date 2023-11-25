@@ -7,15 +7,19 @@ Frontend:
  - Framework – Vue.js
  - Programming language – Javascript
  - Virtualization – Docker
+ 
 Backend: 
  - Framework – Flask
  - Programming language – Python
  - Server – Waitress
  - Virtualization – Docker
+ 
 Machine learning:
  - Framework – Scikit learn
  - Programming language – Python
+ 
 Database: Azure SQL
+
 Infrastructure:
  - Azure SQL servers
  - Azure BLOB storage
