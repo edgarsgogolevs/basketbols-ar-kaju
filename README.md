@@ -1,6 +1,6 @@
 # basketbols-ar-kaju
 
-Front-end [repository](https://github.com/Agada-nonet/backetball-front-side).
+NBA game outcome prediction.
 
 ### Technology stack
 Frontend: 
