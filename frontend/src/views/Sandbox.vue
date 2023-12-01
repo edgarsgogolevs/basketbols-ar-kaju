@@ -1,10 +1,12 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
 import Dialog from 'primevue/dialog';
 import Menu from 'primevue/menu';
+
+import testService from '@/services/testService';
 
 const textValue = ref('Banan');
 
@@ -24,6 +26,15 @@ function showDialog() {
   visible.value = true;
 }
 
+function load() {
+  testService.getTest().then((response) => {
+    console.log(response);
+  });
+}
+
+onMounted(() => {
+  load();
+});
 const menu = ref();
 const items = ref([
     {
