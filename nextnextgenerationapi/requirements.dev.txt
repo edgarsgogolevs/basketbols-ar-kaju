@@ -1,0 +1,5 @@
+PyALE
+mypy
+types-Flask-Cors
+types-waitress
+pandas-stubs
