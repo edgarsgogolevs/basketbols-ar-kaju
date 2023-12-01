@@ -15,4 +15,3 @@ apispec
 apispec[marshmallow]
 flask-apispec
 apispec-webframeworks
-flask-apispec-autodiscovery
