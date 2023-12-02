@@ -9,13 +9,6 @@ from schemas.ResponseSchemas import SuccessSchema
 lg = logging.getLogger("api.games")
 bp = Blueprint("games", __name__, url_prefix="/games")
 
-"""
-Probably need some shit like nearest games.
-Submit games which checks if game exists and adds it to database.
-Get specific game.
-Games in range.
-"""
-
 
 @bp.route("/", methods=["POST"])
 @use_kwargs(GameSchema(only=["team_home_id", "team_away_id", "starts_at"]))
