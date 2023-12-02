@@ -1,0 +1,40 @@
+@media (max-width: 1400px) {
+    .ba-main-small-nav-button {
+
+        justify-self: start;
+      }
+ }
+
+
+@media (max-width: 1200px) {
+    header>.ba-main-nav-button  h2{
+        display: none;
+    }
+    header>.ba-main-nav-button {
+        width: 4rem;
+        grid-template-columns: auto;
+        height: var(--size-nav-bar);
+    }
+    header>.ba-main-nav-button .mdi-basketball.mdi-36px {
+        margin: 0;
+    }
+    .main-layout header {
+        grid-template-columns: auto 1fr auto;
+      }
+}
+
+@media (max-width: 950px) {
+   .ba-nav-menu-button .ba-data {
+        display: none;
+   }
+   .ba-nav-menu-button{
+        width: calc(4rem + 5px);
+    }
+    .main-layout header {
+        grid-template-columns: auto auto auto;
+      }
+      .ba-nav-menu {
+        gap: 0;
+      }
+}
+

@@ -7,7 +7,7 @@ export default {
 
 
 <template>
-  <div class="app">
+  <div >
     <router-view></router-view>
   </div>
 </template>

@@ -8,6 +8,11 @@ const routes = [
         path: '/sandbox',
         name: 'sandbox',
         component: () => import('@/views/Sandbox.vue')
+      },
+      {
+        path: '/games',
+        name: 'games',
+        component: () => import('@/views/predictions/GameList.vue')
       }
     ]
   },

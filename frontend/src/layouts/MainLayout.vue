@@ -1,11 +1,13 @@
 <script setup>
 import {ref, computed} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import Button from 'primevue/button';
+import { useNavigatingStore } from '@/stores/useNavigatingStore';
 
+import Button from 'primevue/button';
+import ProgressSpinner from 'primevue/progressspinner';
 import Dialog from 'primevue/dialog';
 
-
+const navigatingStore = useNavigatingStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -32,6 +34,9 @@ const currentTab = computed(() => {
 
 <template>
     <div class="main-layout">
+      <div class="global-loader" v-if="navigatingStore.isNavigating ">
+        <ProgressSpinner strokeWidth="6" animationDuration="1.5s" />
+      </div>
       <header>
         <div class="ba-main-nav-button" :class="{ 'selected': currentTab === '/'}" @click="goTo('/')">
           <i class="mdi mdi-basketball mdi-36px" ></i>
@@ -43,7 +48,7 @@ const currentTab = computed(() => {
             <i class="mdi mdi-test-tube mdi-36px"></i>
             <p class="ba-data">Sandbox</p>
           </div>
-            <div class="ba-nav-menu-button"  @click="goTo('sandbox')">
+            <div class="ba-nav-menu-button"  @click="goTo('games')">
             <i class="mdi mdi-brain mdi-36px"></i>
             <p class="ba-data">AI Predictions</p>
           </div>

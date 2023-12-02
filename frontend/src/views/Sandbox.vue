@@ -28,7 +28,7 @@ function showDialog() {
 
 function load() {
   testService.getTest().then((response) => {
-    console.log(response);
+    // console.log(response);
   });
 }
 
@@ -58,17 +58,13 @@ const toggle = (event) => {
 
 </script>
 <template>
-  <div class="ba-main-form">
+  <div class="ba-main-form form-2">
     <div class="ba-header">
-      <h1>Sandbox</h1>
+      <h2>Sandbox</h2>
     </div>
+    
     <div class="ba-row">
-      <div class="ba-page-header">
-        <h2>Button</h2>
-
-
-      </div>
-      <div class="ba-page-body" >
+      <div class="ba-row-flex " >
         <Button label="Primary" />
         <Button label="Secondary" severity="secondary" />
         <Button label="Success" severity="success" />
@@ -78,20 +74,25 @@ const toggle = (event) => {
         <Button label="Danger" severity="danger" />
       </div>
     </div>
-    <div class="ba-row">
-      <div class="ba-page-header">
-        <h2>InputText</h2>
-      </div>
-      <div class="ba-page-body" >
+    <div class="ba-section-2">
+    <div class="ba-row-2">
+      <div class="ba-row-flex " >
         <InputText type="text" v-model="textValue" />
         <code>{{ textValue }}</code>
       </div>
     </div>
+    <div class="ba-row-2">
+      <div class="ba-row-flex " >
+        <InputText type="text" v-model="textValue" />
+        <code>{{ textValue }}</code>
+      </div>
+    </div>
+  </div>
     <div class="ba-row">
       <div class="ba-page-header">
         <h2>Value picker</h2>
       </div>
-      <div class="ba-page-body" >
+      <div class="ba-row-flex " >
         <Dropdown v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Select a City" class="w-full md:w-14rem" />
       <code>{{ selectedCity?.name }}</code>
       </div>
@@ -100,7 +101,7 @@ const toggle = (event) => {
       <div class="ba-page-header">
         <h2>Dialog</h2>
       </div>
-      <div class="ba-page-body" >
+      <div class="ba-row-flex " >
         <Button label="Show" icon="pi pi-external-link" @click="showDialog" />
         
         <Dialog v-model:visible="visible" modal header="Header" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
@@ -118,7 +119,7 @@ const toggle = (event) => {
       <div class="ba-page-header">
         <h2>Menu</h2>
       </div>
-      <div class="ba-page-body" >
+      <div class="ba-row-flex " >
         <div class="card flex justify-content-center">
         <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
         <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
