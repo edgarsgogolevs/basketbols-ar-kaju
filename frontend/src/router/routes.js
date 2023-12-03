@@ -10,28 +10,12 @@ const routes = [
         component: () => import('@/views/Sandbox.vue')
       },
       {
-        path: '/games',
-        name: 'games',
-        component: () => import('@/views/predictions/GameList.vue')
+        path: '/models',
+        name: 'models',
+        component: () => import('@/views/predictions/ModelsList.vue')
       }
     ]
-  },
-
-  //Stable
-  // {
-  //   path: '/',
-  //   name: 'welcome',
-  //   component: () => import('@/views/Welcome.vue'),
-  //   // component: () => import('@/layouts/MainLayout.vue'),
-
-  // },
-  // {
-  //   path: '/sandbox',
-  //   name: 'sandbox',
-  //   component: () => import('@/views/Sandbox.vue')
-  // }
-  
+  },  
 ]
-
 
 export default routes;
