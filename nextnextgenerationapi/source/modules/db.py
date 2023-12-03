@@ -47,6 +47,13 @@ class Db:
             raise Exception("Could not establish connection to database")
         return self.conn.cursor()
 
+    def to_dictlist(self, data: list, description: list) -> list:
+        ret = []
+        columns = [x[0] for x in description]
+        for row in data:
+            ret.append(dict(zip(columns, row)))
+        return ret
+
     def select(self, query: str, data: Union[list, tuple, None] = None) -> list:
         cursor = self.get_cursor()
         if isinstance(data, list) or isinstance(data, tuple):
@@ -55,7 +62,8 @@ class Db:
         else:
             self.lg.debug(f'Executing query: "{query}"')
             cursor.execute(query)
-        return cursor.fetchall()
+        return self.to_dictlist(cursor.fetchall(), cursor.description)
+
 
     def select_as_dict(self, query: str, data: Union[list, tuple, None] = None) -> dict:
         """

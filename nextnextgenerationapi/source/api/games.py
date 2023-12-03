@@ -2,12 +2,15 @@ from flask import Blueprint, jsonify
 import logging
 from flask_apispec import marshal_with, use_kwargs  # type: ignore
 
+from modules.db import Db
+
 from schemas.GameSchema import GameSchema
 from schemas.ResponseSchemas import SuccessSchema
 
 
 lg = logging.getLogger("api.games")
 bp = Blueprint("games", __name__, url_prefix="/games")
+db = Db()
 
 
 @bp.route("/", methods=["POST"])
@@ -19,9 +22,7 @@ def add_game():
     Look up suggested game on nba website or api
     and insert it to db.
     """
-    responses = {
-        201: {"Description" : "Created", "model": SuccessSchema}
-    }
+    responses = {201: {"Description": "Created", "model": SuccessSchema}}
     # TODO: Implement
     return {"message": "ok"}, 201
 
@@ -29,12 +30,42 @@ def add_game():
 @bp.route("/upcoming/<int:count>", methods=["GET"])
 @marshal_with(GameSchema(many=True))
 def upcoming_games(count: int):
-    # TODO: Implement
-    return f"{count} upcoming games"
+    if count > 1000:
+        lg.warning("Count > 1000, setting to 1000")
+        count = 1000
+    data = db.select(
+        f"SET ROWCOUNT ?; SELECT * FROM basketball.games where game_date > GETDATE() ORDER BY game_date ASC",
+        (count,),
+    )
+    if not data:
+        return {"error": "Not found"}, 404
+    return GameSchema(many=True).dump(data)
+
+
+@bp.route("/recent/<int:count>", methods=["GET"])
+@marshal_with(GameSchema(many=True, exclude=["team_home", "team_away"]))
+def recent_games(count: int):
+    if count > 1000:
+        lg.warning("Count > 1000, setting to 1000")
+        count = 1000
+    data = db.select(
+        f"SET ROWCOUNT ?; SELECT * FROM basketball.games where game_date < GETDATE() ORDER BY game_date DESC",
+        (count,),
+    )
+
+    if not data:
+        return {"error": "Not found"}, 404
+    # return GameSchema(many=True).dump(data)
+    return data
 
 
 @bp.route("/head_to_head/<int:team1>/<int:team2>")
 @marshal_with(GameSchema)
 def get_head_to_head_games(team1: int, team2: int):
-    # TODO: Implement
-    return f"matches of team {team1} and {team2}"
+    data = db.select(
+        f"SET ROWCOUNT 100; SELECT * FROM basketball.games WHERE team_home=? AND team_away=? OR team_home=? AND team_away=? ORDER BY game_date",
+        (team1, team2, team2, team1),
+    )
+    if not data:
+        return {"error": "Not found"}, 404
+    return GameSchema(many=True).dump(data)

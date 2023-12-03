@@ -1,6 +1,7 @@
 ### Run locally
 
 ! On UNIX like platforms `unixodbc` should be installed. !
+[Refer to this page](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver16&tabs=ubuntu18-install,alpine17-install,debian8-install,redhat7-13-install,rhel7-offline)
 
 1. Create Python 3.10 virtual environment
 For example:
