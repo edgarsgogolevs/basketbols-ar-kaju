@@ -18,7 +18,7 @@ class Db:
         return cls._instance
 
     def __init__(self):
-        self.lg = logging.getLogger("db")
+        self.lg = logging.getLogger("api.db")
         self.conn = None
         self.establish_connection()
 
