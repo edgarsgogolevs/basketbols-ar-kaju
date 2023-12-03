@@ -1,0 +1,28 @@
+
+
+*,::before, ::after {
+    box-sizing: border-box;
+  }
+  :root {
+    --color-background: #111827;
+    --color-area: #1f2937;
+    --color-opacity-background: rgba(17, 24, 39, 0.98);
+    --color-input-background: #111827;
+    --color-backetball: #c81008;
+    --color-nav-background: #151515;
+    --color-nav-background-start: #e49b36;
+    --color-nav-background-end: #4f01ea;
+    --color-nav-border: #a78bfa;
+    --color-nav-background-hover: #05080f;
+    --color-box-shadow-orange: rgb(228, 155, 54, 0.8);
+  
+    --color-text: #eee;
+    --color-description-text: #aaa;
+    --color-nav-text: #a78bfa;
+    --color-nav-text-hover: #eee;
+  
+  
+    --size-row-2: 40rem;
+    --size-nav-bar: 4rem;
+    --size-row-height: 3rem;
+  }

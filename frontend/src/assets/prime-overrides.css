@@ -1,0 +1,16 @@
+.p-toast .p-toast-message.p-toast-message-success {
+    background: rgba(16, 185, 106, 0.5);
+    color: var(--color-text);
+}
+.p-toast .p-toast-message.p-toast-message-info {
+    background: rgba(59, 130, 246, 0.5);
+    color: var(--color-text);
+}
+.p-toast .p-toast-message.p-toast-message-warn {
+    background: rgba(234, 179, 8, 0.5);
+    color: var(--color-text);
+}
+.p-toast .p-toast-message.p-toast-message-error {
+    background: rgba(213, 47, 47, 0.5);
+    color: var(--color-text);
+}

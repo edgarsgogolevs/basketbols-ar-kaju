@@ -1,27 +1,3 @@
-*,::before, ::after {
-  box-sizing: border-box;
-}
-:root {
-  --color-background: #282828;
-  --color-opacity-background: rgba(40, 40, 40, 0.98);
-  --color-input-background: #111827;
-  --color-backetball: #c81008;
-  --color-nav-background: #151515;
-  --color-nav-background-start: #e49b36;
-  --color-nav-background-end: #4f01ea;
-  --color-nav-border: #e49b36;
-  --color-nav-background-hover: #030303;
-
-  --color-text: #eee;
-  --color-description-text: #aaa;
-  --color-nav-text: #efa53b;
-
-
-
-  --size-nav-bar: 4rem;
-}
-
-
 body {
   margin: 0;
   min-height: 100dvh;
@@ -40,22 +16,37 @@ body {
 h1, p {
   margin: 0;
 }
+p {
+  line-height: 1.2rem;
+}
 main {
   color: var(--color-text);
 }
-
-.ba-data {
+.ba-nav-menu-button .ba-data {
   font-weight: bold;
+}
+.ba-data {
   color: var(--color-text);
 }
 .ba-description {
   color: var(--color-description-text);
 }
+.small-text {
+  justify-content: start;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--color-description-text);
+}
+.ba-start-row {
+  display: flex;
+  justify-content: start;
+
+}
 
 
 .main-layout {
   display: grid;
-  grid-template-columns: 4rem auto 4rem;
+  grid-template-columns: 1fr 1400px 1fr;
   grid-template-rows: var(--size-nav-bar) 1fr auto;
   grid-template-areas: "header header header"
   "nav main aside"
@@ -127,6 +118,7 @@ main {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center; 
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .ba-main-nav-button i {
   margin-left: 1rem;
@@ -139,6 +131,7 @@ main {
 .ba-main-small-nav-button:hover {
   cursor: pointer;
   background-color: var(--color-nav-background-hover);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .ba-main-small-nav-button {
   height: var(--size-nav-bar);
@@ -158,42 +151,74 @@ main {
 .ba-page-header {
   background-color: var(--color-background);
 }
-.ba-page-body {
+.ba-row-flex {
   background-color: var(--color-background);
   display: flex;
   gap: 0.5rem;
 }
 .ba-main-form {
-  display: block;
-
-}
-.ba-main-form>.ba-header {
-  padding: 1rem;
+  display: grid;
   background-color: var(--color-background);
+  grid-template-columns: 1fr;
+  position: relative;  
+}
+
+
+.ba-main-form>.ba-sticky-header {
+  position: sticky;
+  z-index: 100;
+  top: calc(var(--size-row-height) + 1rem);
+  padding: 0.75rem;
+  background-color: var(--color-background);
+  border-bottom: 1px solid var(--color-nav-border);
+  height: var(--size-row-height);
+}
+.ba-main-form>.ba-sticky-header>h2 {
+  padding: 0;
+  margin: 0;
 }
 .ba-row {
+  width: 100%;
   background-color: var(--color-background);
   padding: 1.5rem 3rem;
-
   position: static;
 }
+.ba-row-2 {
+  width: var(--size-row-2);
+  background-color: var(--color-background);
+  padding: 1.5rem 3rem;
+  position: static;
+}
+
 .ba-nav-menu-button {
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center; 
-  width: 15rem;
+  width: 12rem;
   height: var(--size-nav-bar);
   padding: 1rem;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 
 .ba-nav-menu-button:hover {
   cursor: pointer;
   background-color: var(--color-nav-background-hover);
+  color: var(--color-nav-text-hover);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+
+.main-layout > header .ba-main-nav-button h2 {
+  transition:  color 0.2s;
+}
+.main-layout > header .ba-main-nav-button:hover h2{
+  color: var(--color-nav-text-hover)
 }
 .ba-nav-menu-button.selected,
 .ba-main-nav-button.selected {
   cursor: pointer;
   background-color: var(--color-nav-background-hover);
+  color: var(--color-nav-text-hover);
   border-bottom: 2px solid var(--color-nav-border);
 }
 
@@ -203,4 +228,51 @@ main {
   background: linear-gradient(to left, var(--color-nav-background-start), var(--color-nav-background-end));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.ba-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--color-background);
+}
+.ba-section-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--color-background);
+}
+.global-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  background-color: var(--color-opacity-loader-background);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.models-card-wrapper {
+  display: grid;
+  height: 40rem;
+  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--color-background);
+}
+
+.ba-form-label {
+  margin: 1rem 0 0 0;
+}
+.knob-card p {
+  margin: 1rem;
+}
+.flex-knob-block {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
 }

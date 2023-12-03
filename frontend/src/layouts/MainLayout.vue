@@ -1,11 +1,14 @@
 <script setup>
 import {ref, computed} from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import Button from 'primevue/button';
+import { useNavigatingStore } from '@/stores/useNavigatingStore';
+import Toast from 'primevue/toast';
 
+import Button from 'primevue/button';
+import ProgressSpinner from 'primevue/progressspinner';
 import Dialog from 'primevue/dialog';
 
-
+const navigatingStore = useNavigatingStore()
 const router = useRouter()
 const route = useRoute()
 
@@ -32,6 +35,9 @@ const currentTab = computed(() => {
 
 <template>
     <div class="main-layout">
+      <div class="global-loader" v-if="navigatingStore.isNavigating ">
+        <ProgressSpinner strokeWidth="6" animationDuration="1.5s" />
+      </div>
       <header>
         <div class="ba-main-nav-button" :class="{ 'selected': currentTab === '/'}" @click="goTo('/')">
           <i class="mdi mdi-basketball mdi-36px" ></i>
@@ -40,20 +46,20 @@ const currentTab = computed(() => {
         </div>
         <div class="ba-nav-menu">
           <div class="ba-nav-menu-button" :class="{ 'selected': currentTab === '/sandbox'}" @click="goTo('sandbox')">
-            <i class="mdi mdi-test-tube mdi-36px"></i>
+            <i class="mdi mdi-test-tube mdi-36px sandbox"></i>
             <p class="ba-data">Sandbox</p>
           </div>
-            <div class="ba-nav-menu-button"  @click="goTo('sandbox')">
-            <i class="mdi mdi-brain mdi-36px"></i>
-            <p class="ba-data">AI Predictions</p>
+            <div class="ba-nav-menu-button" :class="{ 'selected': currentTab === '/models'}"  @click="goTo('models')">
+            <i class="mdi mdi-brain mdi-36px models"></i>
+            <p class="ba-data">AI Models</p>
           </div>
           <div class="ba-nav-menu-button" @click="goTo('sandbox')">
-            <i class="mdi mdi-history mdi-36px" ></i>
+            <i class="mdi mdi-history mdi-36px history" ></i>
             <p class="ba-data">History</p>
           </div>
-          <div class="ba-nav-menu-button" @click="goTo('sandbox')">
+          <div class="ba-nav-menu-button about" @click="goTo('sandbox')">
             <i class="mdi mdi-account-group-outline mdi-36px" ></i>
-            <p class="ba-data">About Us</p>
+            <p class="ba-data">About</p>
           </div>
         </div>
         <div class="ba-main-small-nav-button" @click="showDialog">
@@ -76,6 +82,7 @@ const currentTab = computed(() => {
           </div>
         </div>
         </div>
+        <Toast />
         <Dialog v-model:visible="visible" modal header="Header" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
               <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

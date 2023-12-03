@@ -6,7 +6,7 @@ export default {
             const response = await api().get('/');
             return response.data;
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 };
