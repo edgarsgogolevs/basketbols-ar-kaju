@@ -16,14 +16,17 @@ const cardStyle = ref({});
 const imageStyle = ref({ transform: 'scale(1)' });
 
 function handleMouseMove(e) {
-  let { offsetX: x, offsetY: y } = e;
-  const { width, height } = e.target.getBoundingClientRect();
+  const card = e.currentTarget;
+  const rect = card.getBoundingClientRect();
+  let x = e.clientX - rect.left;
+  let y = e.clientY - rect.top;
 
-  x /= width;
-  y /= height;
+  x /= rect.width;
+  y /= rect.height;
 
-  x = (x - 0.5) * 10;
-  y = (y - 0.5) * -10;
+  const multiplier = 10; 
+  x = (x - 0.5) * multiplier;
+  y = (y - 0.5) * -multiplier;
 
   cardStyle.value = {
     transform: `perspective(600px) rotateX(${y}deg) rotateY(${x}deg)`
