@@ -11,7 +11,7 @@ bp = Blueprint("games", __name__, url_prefix="/games")
 
 
 @bp.route("/", methods=["POST"])
-@use_kwargs(GameSchema(only=["team_home_id", "team_away_id", "starts_at"]))
+@use_kwargs(GameSchema(only=["team_home_id", "team_away_id", "game_date"]))
 @marshal_with(SuccessSchema, code=201)
 def add_game():
     """
