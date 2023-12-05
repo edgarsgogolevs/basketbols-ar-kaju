@@ -4,9 +4,9 @@ NBA game outcome prediction.
 
 ### Saturs
 
-- [Technology stack](#Technology_stack)
+- [Technology stack](#Technology-stack)
 - [Concept](#Concept)
-- [Lietotāju stāsti](#Lietotāju_stāsti)
+- [Lietotāju stāsti](#Lietotāju-stāsti)
 
 ### Technology stack
 
