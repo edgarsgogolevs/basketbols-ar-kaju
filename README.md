@@ -4,11 +4,12 @@ NBA game outcome prediction.
 
 ### Saturs
 
-- [Technology stack](#Technology stack)
+- [Technology stack](#Technology_stack)
 - [Concept](#Concept)
-- [Lietotāju stāsti](#Lietotāju stāsti)
+- [Lietotāju stāsti](#Lietotāju_stāsti)
 
 ### Technology stack
+
 Frontend: 
  - Framework – Vue.js
  - Programming language – Javascript
