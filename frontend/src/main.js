@@ -16,8 +16,8 @@ import 'primeicons/primeicons.css'
 
 import './assets/variables.css'
 import './assets/prime-overrides.css'
-import './assets/media-styles.css'
 import './assets/styles.css'
+import './assets/media-styles.css'
 
 events(router);
 const app = createApp(App);
