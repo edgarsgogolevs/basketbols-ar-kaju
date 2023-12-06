@@ -22,6 +22,7 @@ async function load() {
     if (response.status >= 200 && response.status < 300) {
       dataTemp.value = response.data;
     }
+    console.log(response);
     // dataTemp.value = response.data;
   } catch (error) {
 
