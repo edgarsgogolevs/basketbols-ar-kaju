@@ -3,8 +3,11 @@ import pyodbc  # type: ignore
 import logging
 from typing import Any, Union
 
-connection_string = os.environ["AZURE_SQL_CONNECTIONSTRING"]
-
+# connection_string = os.environ["AZURE_SQL_CONNECTIONSTRING"]
+user = os.environ["AZURE_SQL_USER"]
+password = os.environ["AZURE_SQL_PASSWORD"]
+connection_string = 'Driver={{ODBC Driver 18 for SQL Server}};Server=tcp:basketball-devel.database.windows.net,1433;Database=baskteball-devel;Uid={0};Pwd={1};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;'
+connection_string = connection_string.format(user, password)
 
 # WARNING: None of these functions are tested
 
@@ -20,17 +23,20 @@ class Db:
     def __init__(self):
         self.lg = logging.getLogger("api.db")
         self.conn = None
+        self.conn_retry_count = 0
         self.establish_connection()
 
     def establish_connection(self):
-        self.lg.info("Establishing connection to database...")
-        self.conn = pyodbc.connect(connection_string)
-        if self.conn:
-            self.lg.info("Connection to database established")
-            return
-        self.lg.error("Could not establish connection to database")
-        # WARNING: fails sometimes occur, need to implement retry
-        raise Exception("Could not establish connection to database")
+        if self.conn_retry_count > 5:
+            self.lg.error("Could not establish connection to database")
+            raise Exception("Could not establish connection to database")
+        try:
+            self.lg.info("Establishing connection to database...")
+            self.conn = pyodbc.connect(connection_string)
+        except pyodbc.Error:
+            self.lg.warning(f"Could not establish connection to database. Retrying...")
+            self.conn_retry_count += 1
+            return self.establish_connection()
 
     def check_connection(self):
         try:
