@@ -30,7 +30,7 @@ Database: Azure SQL
 Infrastructure:
  - Azure SQL servers
  - Azure BLOB storage
- - Azure App Service
+ - Azure Container App
 
 ### Concept
 ![Concept model](./basketball_konceptu_modelis.excalidraw.png)
