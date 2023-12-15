@@ -70,4 +70,4 @@ def get_head_to_head_games(team1: int, team2: int):
     )
     if not data:
         return {"error": "Not found"}, 404
-    return GameSchema(many=True).dump(data)
+    return data
