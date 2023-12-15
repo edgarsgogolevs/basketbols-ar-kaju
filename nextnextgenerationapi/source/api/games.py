@@ -28,18 +28,20 @@ def add_game():
 
 
 @bp.route("/upcoming/<int:count>", methods=["GET"])
-@marshal_with(GameSchema(many=True))
+@marshal_with(GameSchema(many=True, exclude=["team_home", "team_away"]))
 def upcoming_games(count: int):
     if count > 1000:
         lg.warning("Count > 1000, setting to 1000")
         count = 1000
     data = db.select(
-        f"SET ROWCOUNT ?; SELECT * FROM basketball.games where game_date > GETDATE() ORDER BY game_date ASC",
+        f"SET ROWCOUNT ?;\
+        SELECT id, team_home as team_home_id, team_away as team_away_id, game_date\
+        FROM basketball.games where game_date > GETDATE() ORDER BY game_date ASC",
         (count,),
     )
     if not data:
         return {"error": "Not found"}, 404
-    return GameSchema(many=True).dump(data)
+    return data
 
 
 @bp.route("/recent/<int:count>", methods=["GET"])
