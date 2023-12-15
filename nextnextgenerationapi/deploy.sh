@@ -1,6 +1,13 @@
 #!/bin/bash
 source .azenv
-az containerapp create \
+
+# Build and push image to Azure Container Registry
+az acr build \
+  --registry $ACR_NAME \
+  --image $API_NAME:latest \
+  --file Dockerfile .
+
+az containerapp up \
   --name $API_NAME \
   --resource-group $RESOURCE_GROUP \
   --environment $ENVIRONMENT \
