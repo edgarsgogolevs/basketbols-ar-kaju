@@ -16,4 +16,7 @@ az containerapp up \
   --env-vars $AZURE_ENV_VARS \
   --ingress 'external' \
   --registry-server $ACR_NAME.azurecr.io \
-  --query properties.configuration.ingress.fqdn
+  --cpu 2 \
+  --memory 4 \
+  --scale 3 \
+  --query properties.configuration.ingress.fqdn 
