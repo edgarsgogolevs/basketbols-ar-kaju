@@ -12,6 +12,6 @@ class GameSchema(Schema):
     team_away = fields.Nested(TeamSchema)
     team_away_id = fields.Int()
     game_date = fields.Date(required=True)
-    home_won = fields.Bool()
+    home_won = fields.Bool(allow_none=True)
     score_home = fields.Int()
     score_away = fields.Int()

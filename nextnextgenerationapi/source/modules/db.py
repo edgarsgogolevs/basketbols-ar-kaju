@@ -60,7 +60,7 @@ class Db:
             ret.append(dict(zip(columns, row)))
         return ret
 
-    def select(self, query: str, data: Union[list, tuple, None] = None) -> list:
+    def select(self, query: str, data: Union[list, tuple, None] = None) -> list[dict]:
         cursor = self.get_cursor()
         if isinstance(data, list) or isinstance(data, tuple):
             self.lg.debug(f'Executing query: "{query}" <= {data}')

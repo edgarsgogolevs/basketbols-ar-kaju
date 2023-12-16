@@ -2,22 +2,26 @@ from flask import Blueprint, jsonify, request
 import logging
 from flask_apispec import marshal_with, use_kwargs  # type: ignore
 
-from modules.predict import predict_games  # type: ignore
-import modules.models as models
-import modules.validate
-import modules.db as db
+from modules.predict import predict_game_by_game_id_model_id # type: ignore
+import modules.validate as validate
 
-from schemas.GamePredictionSchema import GamePredictionSchema # type: ignore
+from schemas.GamePredictionSchema import GamePredictionSchema, GamePredictionRequestSchema # type: ignore
 
 bp = Blueprint("predictions", __name__, url_prefix="/predictions")
 lg = logging.getLogger("api.predictions")
 
 
 @bp.route("/predict_game/<int:game_id>/<int:model_id>", methods=["GET"])
-@marshal_with(GamePredictionSchema)
-def predict_game():
-    # TODO: implement
-    return "Game prediction"
+@marshal_with(GamePredictionSchema, code=200)
+@validate.schema(GamePredictionRequestSchema)
+def predict_game(game_id: int, model_id: int):
+    """
+    Predict game outcome by game id.
+    """
+    prediction = predict_game_by_game_id_model_id(game_id, model_id)
+    if not prediction:
+        return {"error": "Game not found"}, 404
+    return prediction
 
 
 @bp.route("/predict_games/<int:model_id>", methods=["GET"])
@@ -48,17 +52,3 @@ def get_models_predicted_games():
 #         "predict_winning_probability": float(predict_winning_probability),
 #     }
 #     return jsonify(ret), 200
-#
-#
-# @bp.route("/test", methods=["GET"])
-# def test():
-#     lg.info("Testing connection to database")
-#     conn = db.get_conn()
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT @@version;")
-#     row = cursor.fetchone()
-#     if row is None:
-#         return jsonify("No data"), 500
-#     return jsonify(row[0]), 200
-
-

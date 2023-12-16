@@ -9,3 +9,6 @@ class ModelSchema(Schema):
     name = fields.Str()
     description = fields.Str()
     profile_picture = fields.Url()
+    picture_small = fields.Url()
+    nominal_precision = fields.Float()
+    

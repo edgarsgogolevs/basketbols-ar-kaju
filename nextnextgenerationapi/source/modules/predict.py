@@ -1,10 +1,54 @@
 import numpy as np
 import pandas as pd
 from nba_api.stats.endpoints import leaguegamefinder  # type: ignore
+from typing import Any, Union
+import logging
 
-from typing import Any
+import modules.models as models
+from modules.db import Db
+import modules.models as models
+import modules.teams as teams
 
-def predict_games(model : Any, team_home: str, team_away: str) -> tuple[int, float]:
+lg = logging.getLogger("modules.predict")
+db = Db()
+
+
+def predict_game_by_game_id_model_id(game_id: int, model_id: int, save_prediction=True) -> Union[dict, None]:
+    # Check if prediction already exists
+    existing_prediction = db.select(
+        "SELECT game_id, model_id, home_wins, home_winning_proba, prediction_correct FROM basketball.game_predictions WHERE game_id=? AND model_id=?",
+        (game_id, model_id),
+    )
+    if existing_prediction:
+        return existing_prediction[0]
+
+    game_data = db.select("SELECT * FROM basketball.games WHERE id=?", (game_id,))
+    if not game_data:
+        return None
+    
+    game_data = game_data[0]
+    team_home_id = game_data["team_home"]
+    team_away_id = game_data["team_away"]
+    team_home_name = teams.get_team_name_by_id(team_home_id)
+    team_away_name = teams.get_team_name_by_id(team_away_id)
+    model = models.MODEL_ID_TO_MODEL_MAPPING.get(model_id)
+    predict_home_win, predict_winning_probability = generate_prediction(
+        model, team_home_name, team_away_name
+    )
+    ret = {
+        "game_id": game_id,
+        "model_id": model_id,
+        "home_wins": int(predict_home_win),
+        "home_winning_proba": float(predict_winning_probability),
+    }
+    if save_prediction:
+        db.insert_dict("basketball.game_predictions", ret)
+    return ret
+
+
+def generate_prediction(
+    model: Any, team_home: str, team_away: str
+) -> tuple[int, float]:
     gamefinder = leaguegamefinder.LeagueGameFinder(
         date_from_nullable="01/01/2021", league_id_nullable="00"
     )
@@ -21,7 +65,7 @@ def predict_games(model : Any, team_home: str, team_away: str) -> tuple[int, flo
     away_plus_minus = games_30_away["PLUS_MINUS"].mean()
 
     games_diff = home_plus_minus - away_plus_minus
-  
+
     diff = np.array([games_diff])
     diff_reshaped = diff.reshape(1, -1)
     predict_home_win = model.predict(diff_reshaped)[0]
