@@ -1,10 +1,10 @@
 import api from '@/api';
 
 export default {
-    async getTest() {
+    async getAllModels() {
         try {
             const response = await api().get('/models/all');
-            return response.data;
+            return response;
         } catch (error) {
             console.error(error);
         }

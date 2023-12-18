@@ -84,7 +84,9 @@ function knobColor(value) {
             <Knob  v-model="nominal" :valueColor="knobColor(nominal)" readonly :valueTemplate="`${nominal}%`" />
         </div>
         <div class="card-image" :style="imageStyle" >
-            <Image :src="image" alt="Image" width="100" />
+          <div class="card-image-overlay">
+            <Image :src="image" alt="Image" width="190" />
+          </div>
         </div>
       <slot></slot>
     </div>
@@ -125,9 +127,22 @@ function knobColor(value) {
   margin-top: 0.5rem;
 }
 .knob-card {
-    margin-bottom: 0.5rem;
+    margin-bottom: 2rem;
 }
 .card-image {
-    height: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 12rem;
+    align-items: center;
+}
+.card-image-overlay {
+    width: 90%;
+    height: 101%;
+    border: 2px solid var(--color-border);
+    background-image: url('../assets/back-static.png');
+}
+.card:hover .card-image-overlay {
+    background-image: url('../assets/back.gif');
 }
 </style>

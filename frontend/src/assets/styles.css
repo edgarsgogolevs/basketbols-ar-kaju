@@ -27,6 +27,12 @@ main {
 }
 .ba-data {
   color: var(--color-text);
+  font-weight: 400;
+  line-height: 1.2rem;
+  
+}
+.justify-text {
+  text-align: justify;
 }
 .ba-description {
   color: var(--color-description-text);
@@ -258,7 +264,7 @@ main {
 }
 .models-card-wrapper {
   display: grid;
-  height: 40rem;
+  height: auto;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   gap: 1rem;
   padding: 1rem;
@@ -275,4 +281,9 @@ main {
   display: flex;
   gap: 1.5rem;
   justify-content: center;
+}
+
+.card-description {
+  padding: 1rem;
+  border: 2px solid var(--color-border);
 }
