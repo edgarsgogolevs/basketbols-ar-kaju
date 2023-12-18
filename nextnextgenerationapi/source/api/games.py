@@ -12,6 +12,7 @@ lg = logging.getLogger("api.games")
 bp = Blueprint("games", __name__, url_prefix="/games")
 db = Db()
 
+GAME_FIELDS = "team_home as team_home_id, team_away as team_away_id, home_won, score_home, score_away, game_date, id"
 
 @bp.route("/", methods=["POST"])
 @use_kwargs(GameSchema(only=["team_home_id", "team_away_id", "game_date"]))
@@ -51,13 +52,11 @@ def recent_games(count: int):
         lg.warning("Count > 1000, setting to 1000")
         count = 1000
     data = db.select(
-        f"SET ROWCOUNT ?; SELECT * FROM basketball.games where game_date < GETDATE() ORDER BY game_date DESC",
+        f"SET ROWCOUNT ?; SELECT {GAME_FIELDS} FROM basketball.games where game_date < GETDATE() ORDER BY game_date DESC",
         (count,),
     )
-
     if not data:
         return {"error": "Not found"}, 404
-    # return GameSchema(many=True).dump(data)
     return data
 
 
@@ -65,7 +64,8 @@ def recent_games(count: int):
 @marshal_with(GameSchema)
 def get_head_to_head_games(team1: int, team2: int):
     data = db.select(
-        f"SET ROWCOUNT 100; SELECT * FROM basketball.games WHERE team_home=? AND team_away=? OR team_home=? AND team_away=? ORDER BY game_date",
+        f"SET ROWCOUNT 100; SELECT {GAME_FIELDS} \
+        FROM basketball.games WHERE team_home=? AND team_away=? OR team_home=? AND team_away=? ORDER BY game_date",
         (team1, team2, team2, team1),
     )
     if not data:
