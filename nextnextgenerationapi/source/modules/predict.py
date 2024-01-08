@@ -20,9 +20,11 @@ def predict_game_by_game_id_model_id(game_id: int, model_id: int, save_predictio
         (game_id, model_id),
     )
     if existing_prediction:
+        lg.info("Prediction already exists")
         return existing_prediction[0]
 
     game_data = db.select("SELECT * FROM basketball.games WHERE id=?", (game_id,))
+    lg.info("game data: %s", game_data)
     if not game_data:
         return None
     

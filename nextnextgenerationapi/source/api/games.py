@@ -52,7 +52,7 @@ def recent_games(count: int):
         lg.warning("Count > 1000, setting to 1000")
         count = 1000
     data = db.select(
-        f"SET ROWCOUNT ?; SELECT {GAME_FIELDS} FROM basketball.games where game_date < GETDATE() ORDER BY game_date DESC",
+        f"SET ROWCOUNT ?; SELECT {GAME_FIELDS} FROM basketball.games where game_date < GETDATE() and score_home is not null ORDER BY game_date DESC",
         (count,),
     )
     if not data:

@@ -25,7 +25,7 @@ def get_all_models():
     return data
 
 
-@bp.route("/<int:id>", methods=["GET"])
+@bp.route("/<int:model_id>", methods=["GET"])
 @marshal_with(ModelSchema)
 def get_model(model_id: int):
     data = db.select(f"SELECT * FROM {DEFAULT_TABLE} WHERE id=?", (model_id,))
