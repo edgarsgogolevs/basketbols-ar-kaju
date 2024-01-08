@@ -33,7 +33,6 @@ async function load() {
 const products = ref();
 
 onMounted(() => {
-    ProductService.getProductsSmall().then((data) => (products.value = data.slice(0, 15)));
     load();
 });
 
@@ -41,6 +40,7 @@ onMounted(() => {
 <template>
   <div class="ba-main-form">
     <div class="ba-sticky-header">
+        <div></div>
       <h2>Teams</h2>
     </div>
 

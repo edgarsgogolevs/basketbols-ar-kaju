@@ -5,6 +5,7 @@ import { useNavigatingStore } from '@/stores/useNavigatingStore';
 import Toast from 'primevue/toast';
 
 import Button from 'primevue/button';
+import Breadcrumb from 'primevue/breadcrumb';
 import ProgressSpinner from 'primevue/progressspinner';
 import Dialog from 'primevue/dialog';
 
@@ -30,9 +31,7 @@ const currentTab = computed(() => {
   return route.path
 })
 
-
 </script>
-
 <template>
     <div class="main-layout">
       <div class="global-loader" v-if="navigatingStore.isNavigating ">
@@ -42,7 +41,6 @@ const currentTab = computed(() => {
         <div class="ba-main-nav-button" :class="{ 'selected': currentTab === '/'}" @click="goTo('home')">
           <i class="mdi mdi-basketball mdi-36px" ></i>
             <h2>Basketbols ar kaju</h2>
-
         </div>
         <div class="ba-nav-menu">
           <div class="ba-nav-menu-button" :class="{ 'selected': currentTab === '/sandbox'}" @click="goTo('sandbox')">
@@ -53,9 +51,9 @@ const currentTab = computed(() => {
             <i class="mdi mdi-brain mdi-36px models"></i>
             <p class="ba-data">AI Models</p>
           </div>
-          <div class="ba-nav-menu-button" @click="goTo('sandbox')">
+          <div class="ba-nav-menu-button" :class="{ 'selected': currentTab === '/games' || currentTab.startsWith('/game') }" @click="goTo('games')">
             <i class="mdi mdi-history mdi-36px history" ></i>
-            <p class="ba-data">History</p>
+            <p class="ba-data">Games</p>
           </div>
           <div class="ba-nav-menu-button about" :class="{ 'selected': currentTab === '/teams'}" @click="goTo('teams')">
             <i class="mdi mdi-account-group-outline mdi-36px" ></i>
@@ -65,6 +63,7 @@ const currentTab = computed(() => {
         <div class="ba-main-small-nav-button" @click="showDialog">
             <i class="mdi mdi-information-outline mdi-36px" ></i>
         </div>
+
       </header>
       <main class="ba-main">
         

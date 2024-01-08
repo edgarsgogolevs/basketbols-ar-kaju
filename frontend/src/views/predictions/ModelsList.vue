@@ -62,6 +62,7 @@ function redirectToModel(modelId) {
 <template>
   <div class="ba-main-form">
     <div class="ba-sticky-header">
+      <div></div>
       <h2>Models</h2>
     </div>
     <div class="ba-form-label">

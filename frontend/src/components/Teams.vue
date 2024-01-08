@@ -7,11 +7,15 @@ const props = defineProps({
 });
 
 
+function goTO(link) {
+  window.open(link, '_blank');
+}
+
 </script>
 
 <template>
     <div class="ba-teams-grid">
-        <div class="team" v-for="item in props.teams" :key="item.id">
+        <div class="team" v-for="item in props.teams" :key="item.id" @click="goTO(item.nba_url)">
             <div class="team-card">
             <h2 class="team-name">{{ item.name }}</h2>
             <img :src="item.logo_url" :alt="item.name" class="team-logo">
@@ -21,7 +25,7 @@ const props = defineProps({
                 {{ item.conference }}
             </p>
             <p class="team-description">{{ item.description }}</p>
-            <a :href="item.nba_url" class="team-link">Visit NBA Page</a>
+            <a :href="item.nba_url" class="team-link">Click to visit NBA Page</a>
     </div>
         </div>
     </div>
@@ -34,14 +38,17 @@ const props = defineProps({
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 1rem;
 }
-.team {
-    /* border: 2px solid red; */
-}
 
 .team-card {
     border: 1px solid var(--color-border);
     padding: 1rem;
     margin-bottom: 1rem;
+    border-radius: 15px;
+}
+.team-card:hover {
+    box-shadow: 0 0 11px var(--color-box-shadow-orange);
+    cursor: pointer;
+    background-color: var(--color-nav-background-hover);
 }
 .team-logo {
     width: 100px;
@@ -74,7 +81,7 @@ const props = defineProps({
     margin-bottom: 1rem;
 }
 .team-link {
-    color: blue;
+    color: var(--color-nav-text);
     text-decoration: none;
 }
 </style>

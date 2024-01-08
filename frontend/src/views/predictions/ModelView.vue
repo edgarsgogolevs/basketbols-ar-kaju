@@ -67,6 +67,20 @@ function testFunc() {
 <template>
   <div class="ba-main-form">
     <div class="ba-sticky-header">
+    <div class="breadcrumbs">
+        <div class="breadcrumb-separator">
+            <i class="pi pi-home"></i>
+        </div> 
+        <div class="breadcrumbs-item">
+          <router-link to="/">Home</router-link>
+        </div>
+        <div class="breadcrumb-separator">
+            <i class="pi pi-chevron-right"></i>
+        </div>   
+        <div class="breadcrumbs-item">
+          <router-link to="/models">Models</router-link>
+        </div>    
+    </div>
       <h2>Models</h2>
     </div>
     <div class="ba-form-label">
@@ -89,4 +103,3 @@ function testFunc() {
     </div>
   </div>
 </template>
-  

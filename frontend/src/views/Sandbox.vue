@@ -98,6 +98,7 @@ const toggle = (event) => {
 <template>
   <div class="ba-main-form">
     <div class="ba-sticky-header">
+      <div></div>
       <h2>Sandbox</h2>
     </div>
     
