@@ -1,7 +1,7 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
 import { createPinia } from 'pinia';
-import App from './App.vue'
-import router from '@/router'
+import App from './App.vue';
+import router from '@/router';
 import PrimeVue from 'primevue/config';
 import  ToastService  from 'primevue/toastservice';
 
@@ -12,12 +12,13 @@ import MainLayout from './layouts/MainLayout.vue';
 // import primevue styles
 import 'primevue/resources/themes/lara-dark-purple/theme.css';
 import 'primevue/resources/primevue.min.css'; 
-import 'primeicons/primeicons.css'
+import 'primeicons/primeicons.css';
 
-import './assets/variables.css'
-import './assets/prime-overrides.css'
-import './assets/styles.css'
-import './assets/media-styles.css'
+import 'primeflex/primeflex.css';
+import './assets/variables.css';
+import './assets/prime-overrides.css';
+import './assets/styles.css';
+import './assets/media-styles.css';
 
 events(router);
 const app = createApp(App);

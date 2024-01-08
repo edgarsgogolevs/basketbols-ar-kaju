@@ -66,7 +66,7 @@ function showDialog() {
 
 function load() {
   testService.getTest().then((response) => {
-    // console.log(response);
+    console.log(response);
   });
 }
 
@@ -148,7 +148,7 @@ const toggle = (event) => {
       <div class="ba-page-header">
         <h2>Dialog</h2>
       </div>
-      <div class="ba-row-flex " >
+      <div class="ba-row-flex" >
         <Button label="Show" icon="pi pi-external-link" @click="showDialog" />
         
         <Dialog v-model:visible="visible" modal header="Header" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">

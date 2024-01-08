@@ -13,6 +13,17 @@ const routes = [
         path: '/models',
         name: 'models',
         component: () => import('@/views/predictions/ModelsList.vue')
+      },
+      {
+        path: '/teams',
+        name: 'teams',
+        component: () => import('@/views/Teams.vue')
+      },
+      {
+        path: '/model/:id',
+        name: 'model.view',
+        props: (route) => ({ id: Number(route.params.id) }),
+        component: () => import('@/views/predictions/ModelView.vue')
       }
     ]
   },  

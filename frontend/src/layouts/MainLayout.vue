@@ -14,7 +14,7 @@ const route = useRoute()
 
 
 function goTo(path) {
-  router.push(path)
+  router.push({ name: path})
 }
 function toRickRoll() {
   window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
@@ -39,7 +39,7 @@ const currentTab = computed(() => {
         <ProgressSpinner strokeWidth="6" animationDuration="1.5s" />
       </div>
       <header>
-        <div class="ba-main-nav-button" :class="{ 'selected': currentTab === '/'}" @click="goTo('/')">
+        <div class="ba-main-nav-button" :class="{ 'selected': currentTab === '/'}" @click="goTo('home')">
           <i class="mdi mdi-basketball mdi-36px" ></i>
             <h2>Basketbols ar kaju</h2>
 
@@ -49,7 +49,7 @@ const currentTab = computed(() => {
             <i class="mdi mdi-test-tube mdi-36px sandbox"></i>
             <p class="ba-data">Sandbox</p>
           </div>
-            <div class="ba-nav-menu-button" :class="{ 'selected': currentTab === '/models'}"  @click="goTo('models')">
+            <div class="ba-nav-menu-button" :class="{ 'selected': currentTab === '/models' || currentTab.startsWith('/model') }"  @click="goTo('models')">
             <i class="mdi mdi-brain mdi-36px models"></i>
             <p class="ba-data">AI Models</p>
           </div>
@@ -57,9 +57,9 @@ const currentTab = computed(() => {
             <i class="mdi mdi-history mdi-36px history" ></i>
             <p class="ba-data">History</p>
           </div>
-          <div class="ba-nav-menu-button about" @click="goTo('sandbox')">
+          <div class="ba-nav-menu-button about" :class="{ 'selected': currentTab === '/teams'}" @click="goTo('teams')">
             <i class="mdi mdi-account-group-outline mdi-36px" ></i>
-            <p class="ba-data">About</p>
+            <p class="ba-data">Teams</p>
           </div>
         </div>
         <div class="ba-main-small-nav-button" @click="showDialog">
