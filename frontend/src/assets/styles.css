@@ -344,6 +344,7 @@ main {
   box-shadow: 0 0 11px var(--color-box-shadow-orange);
   cursor: pointer;
   background-color: var(--color-nav-background-hover);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .team-logo {
   width: 100px;

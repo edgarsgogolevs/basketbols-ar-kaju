@@ -15,7 +15,7 @@ const errors = useErrors();
 
 const props = defineProps({
     games: { type: Array, default: null },
-    upcoming: { type: Number, default: 0 }
+    
 });
 
 const loading = ref(false);
@@ -142,7 +142,7 @@ function formatScore(score) {
             <Column field="team_away_id" header="Team away id" style="width: 8%"></Column>
             <Column field="Match_between" header="Match between" style="width: 10%">
                 <template #body="item">
-                    <div class="flex align-items-center gap-2">
+                <div class="flex align-items-center gap-2">
                         <img alt="flag" :src="findLogo(item.data.team_home_id)" style="width: 40px" />
                         <p>VS</p>
                         <img alt="flag" :src="findLogo(item.data.team_away_id)" style="width: 40px" />
