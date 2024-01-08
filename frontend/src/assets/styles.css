@@ -314,3 +314,68 @@ main {
   margin-left: 0.2rem;
   margin-top: 0.2rem;
 }
+
+.text-primary {
+  color: var(--color-nav-text);
+  font-weight: bold;
+}
+.versus {
+  color: var(--color-nav-text);
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 0 0.5rem;
+}
+
+.ba-teams-grid {
+  padding: 1rem;
+  display: grid;
+  width: auto;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+}
+
+.team-card {
+  border: 1px solid var(--color-border);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 15px;
+}
+.team-card:hover {
+  box-shadow: 0 0 11px var(--color-box-shadow-orange);
+  cursor: pointer;
+  background-color: var(--color-nav-background-hover);
+}
+.team-logo {
+  width: 100px;
+  height: 100px;
+}
+.team-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.team-abbr {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
+  color: var(--color-text);
+}
+.team-conference {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.team-conference.east {
+  color: var(--color-east-coast-text);
+}
+.team-conference.west {
+  color: var(--color-west-coast-text);
+}
+.team-description {
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+.team-link {
+  color: var(--color-nav-text);
+  text-decoration: none;
+}

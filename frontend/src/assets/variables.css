@@ -16,9 +16,11 @@
     --color-nav-border: #a78bfa;
     --color-border: #9892a8;
     --color-nav-background-hover: #05080f;
+    --color-data-table-background-hover: #141a29;
     --color-box-shadow-orange: rgb(228, 155, 54, 0.8);
   
     --color-text: #eee;
+    --color-link: #a78bfa;
     --color-description-text: #aaa;
     --color-nav-text: #a78bfa;
     --color-nav-text-hover: #eee;

@@ -40,5 +40,13 @@ export default {
         } catch (error) {
             console.error(error);
         }
+    },
+    async getPrediction(game, model) {
+        try {
+            const response = await api().get(`/predictions/predict_game/${game}/${model}`);
+            return response;
+        } catch (error) {
+            console.error(error);
+        }
     }
 };

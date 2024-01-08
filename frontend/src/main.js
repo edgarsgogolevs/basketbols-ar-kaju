@@ -5,6 +5,8 @@ import router from '@/router';
 import PrimeVue from 'primevue/config';
 import  ToastService  from 'primevue/toastservice';
 
+import Tooltip from 'primevue/tooltip';
+
 import events from './router/events';
 
 import MainLayout from './layouts/MainLayout.vue';
@@ -13,6 +15,7 @@ import MainLayout from './layouts/MainLayout.vue';
 import 'primevue/resources/themes/lara-dark-purple/theme.css';
 import 'primevue/resources/primevue.min.css'; 
 import 'primeicons/primeicons.css';
+
 
 import 'primeflex/primeflex.css';
 import './assets/variables.css';
@@ -29,6 +32,7 @@ app.component('MainLayout', MainLayout);
 app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
+app.directive('tooltip', Tooltip);
 
 // maount app
 app.mount('#app');
