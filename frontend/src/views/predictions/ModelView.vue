@@ -12,7 +12,11 @@ import Yuri_Pavlovich_Sokolov from '@/assets/png/Yuri_Pavlovich_Sokolov.png';
 import Janis_Ozolins from '@/assets/png/Janis_Ozolins.png'; 
 import Jordan_Basketfield from '@/assets/png/Jordan_Basketfield.png'; 
 import Nostradamus from '@/assets/png/Nostradamus.png';
-import router from '@/router';
+
+
+const props = defineProps({
+    id: { type: Number}
+});
 
 const errors = useErrors();
 
@@ -23,10 +27,12 @@ const loading = ref(false);
 async function load() {
   loading.value = true;
   try {
-    const response = await modelsService.getAllModels();
+    const response = await modelsService.getModelById(props.id);
     if (response.status >= 200 && response.status < 300) {
       models.value = response.data;
     }
+    console.log(response.data);
+
   } catch (error) {
     errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
   } finally {
@@ -36,7 +42,6 @@ async function load() {
 
 onMounted(() => {
   load();
-
 });
 
 function choseImage(id) {
@@ -54,15 +59,28 @@ function choseImage(id) {
   }
 }
 
-function redirectToModel(modelId) {
-  router.push({ name: 'model.view', params: { id: modelId } });
+function testFunc() {
+  console.log('test');
 }
 
 </script>
 <template>
   <div class="ba-main-form">
     <div class="ba-sticky-header">
-      <div></div>
+    <div class="breadcrumbs">
+        <div class="breadcrumb-separator">
+            <i class="pi pi-home"></i>
+        </div> 
+        <div class="breadcrumbs-item">
+          <router-link to="/">Home</router-link>
+        </div>
+        <div class="breadcrumb-separator">
+            <i class="pi pi-chevron-right"></i>
+        </div>   
+        <div class="breadcrumbs-item">
+          <router-link to="/models">Models</router-link>
+        </div>    
+    </div>
       <h2>Models</h2>
     </div>
     <div class="ba-form-label">
@@ -71,7 +89,7 @@ function redirectToModel(modelId) {
 
     <div class="models-card-wrapper">
       <div class="model-empty-wrapper" v-for="model in models" :key="model.id">
-        <Card @click="redirectToModel(model.id)" :allTimeAcc="66" :lastTimeAcc="30" :nominalAcc="(model.nominal_precision * 100).toFixed(0)" :image="choseImage(model.id)">
+        <Card @click="testFunc" :allTimeAcc="66" :lastTimeAcc="30" :nominalAcc="(model.nominal_precision * 100).toFixed(0)" :image="choseImage(model.id)">
           <template #header>{{ model.name }}</template>
         </Card>
         <div class="card-description">
@@ -85,4 +103,3 @@ function redirectToModel(modelId) {
     </div>
   </div>
 </template>
-  

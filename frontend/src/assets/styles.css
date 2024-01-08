@@ -80,6 +80,7 @@ main {
   grid-template-columns: 20rem 1fr 20rem;
   gap: 1rem;
   color: var(--color-nav-text);
+
 }
 .main-layout>main {
   grid-area: main;
@@ -173,6 +174,8 @@ main {
 .ba-main-form>.ba-sticky-header {
   position: sticky;
   z-index: 100;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   top: calc(var(--size-row-height) + 1rem);
   padding: 0.75rem;
   background-color: var(--color-background);
@@ -286,4 +289,28 @@ main {
 .card-description {
   padding: 1rem;
   border: 2px solid var(--color-border);
+}
+
+.breadcrumbs-item a {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  color: var(--color-nav-text);
+  text-decoration: none;
+}
+.breadcrumbs-item {
+  margin-top: 0.2rem;
+}
+.breadcrumbs {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.breadcrumb-separator {
+  margin-right: 0.2rem;
+  margin-left: 0.2rem;
+  margin-top: 0.2rem;
 }
