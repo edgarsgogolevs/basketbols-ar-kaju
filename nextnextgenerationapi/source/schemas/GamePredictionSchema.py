@@ -12,15 +12,13 @@ class GamePredictionSchema(Schema):
     class Meta:
         unknown = EXCLUDE
 
-    id = fields.Int(dump_only=True)
     game_id = fields.Int()
     model_id = fields.Int()
-    game = fields.Nested(GameSchema)
+    game = fields.Nested(GameSchema(exclude=["team_home", "team_away"]))
     model = fields.Nested(ModelSchema)
     home_wins = fields.Bool()
     home_winning_proba = fields.Float()
     prediction_correct = fields.Bool()
-    created_at = fields.DateTime()
     updated_at = fields.DateTime()
 
 
@@ -31,7 +29,7 @@ class ModelStatsSchema(Schema):
     nominal_accuracy = fields.Float()
     last_ten_accuracy = fields.Float()
     all_time_accuracy = fields.Float()
-    prediction_history = fields.List(fields.Nested(GamePredictionSchema))
+    prediction_history = fields.List(fields.Nested(GamePredictionSchema(exclude=["model"])))
 
 class GamePredictionRequestSchema(Schema):
     class Meta:

@@ -27,7 +27,7 @@ def predict_game(game_id: int, model_id: int):
 
 
 @bp.route("/predict_games/<int:model_id>", methods=["GET"])
-@marshal_with(GamePredictionSchema(many=True))
+@marshal_with(GamePredictionSchema(many=True), code=200)
 def get_models_predicted_games(model_id: int):
     """
     List of predicted games by model.
