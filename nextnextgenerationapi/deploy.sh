@@ -13,7 +13,7 @@ az containerapp up \
   --name $API_NAME \
   --resource-group $RESOURCE_GROUP \
   --environment $ENVIRONMENT \
-  --image $ACR_NAME.azurecr.io/$API_NAME:latest \
+  --image $ACR_NAME.azurecr.io/${API_NAME}:latest \
   --target-port $PORT \
   --env-vars $AZURE_ENV_VARS \
   --ingress 'external' \
@@ -30,8 +30,8 @@ az containerapp up \
 #   --env-vars $AZURE_ENV_VARS \
 #   --ingress 'external' \
 #   --registry-server $ACR_NAME.azurecr.io \
-#   --cpu 1 \
-#   --memory 2 \
+#   --cpu 0.5 \
+#   --memory 1 \
 #   --min-instances 1 \
-#   --max-instances 3 \
+#   --max-instances 5 \
 #   --query properties.configuration.ingress.fqdn 
