@@ -8,194 +8,193 @@ import Menu from 'primevue/menu';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import ColumnGroup from 'primevue/columngroup';   
-import Row from 'primevue/row';
+import Chart from 'primevue/chart';
 
 
-import testService from '@/services/testService';
-import Toast from 'primevue/toast';
+import modelsService from '@/services/modelsService';
+
+import GamesWidget from '@/components/GamesWidget.vue';
+
 import useErrors from '@/hooks/useErrors';
-import { useToast } from 'primevue/usetoast';
+
 
 const errors = useErrors();
 
-const textValue = ref('Banan');
+const loading = ref(false);
+const recentModels = ref();
+const upcommingModels = ref();
+const teams = ref();
 
-const showSuccess = () => {
-  errors.pushNotification({ severity: 'success', summary: 'Success Message', detail: 'Message Content', life: 30000 });
-};
+async function loadRecent() {
+  loading.value = true;
+  try {
+    const response = await modelsService.getRecentGames(21);
+    if (response.status >= 200 && response.status < 300) {
+      recentModels.value = response.data;
+    }
+  } catch (error) {
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+  } finally {
+    loading.value = false;
+  }
+}
+async function loadUpcoming() {
+  loading.value = true;
+  try {
+    const response = await modelsService.getUpcomingGames(21);
+    if (response.status >= 200 && response.status < 300) {
+      upcommingModels.value = response.data;
+    }
+  } catch (error) {
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+  } finally {
+    loading.value = false;
+  }
+}
+async function loadTeams() {
+  loading.value = true;
+  try {
+    const response = await modelsService.getAllTeams();
+    if (response.status >= 200 && response.status < 300) {
+        teams.value = response.data;
+    }
 
-const showInfo = () => {
-  errors.pushNotification({ severity: 'info', summary: 'Info Message', detail: 'Message Content', life: 30000 });
-};
-
-const showWarn = () => {
-  errors.pushNotification({ severity: 'warn', summary: 'Warn Message', detail: 'Message Content', life: 30000 });
-};
-
-const showError = () => {
-  errors.pushNotification({ severity: 'error', summary: 'Error Message', detail: 'Message Content', life: 30000 });
-};
-
-const dataTemp = ref([{
-    id: '1000',
-    code: 'f230fh0g3',
-    name: 'Bamboo Watch',
-    description: 'Product Description',
-    image: 'bamboo-watch.jpg',
-    price: 65,
-    category: 'Accessories',
-    quantity: 24,
-    inventoryStatus: 'INSTOCK',
-    rating: 5
-}]);
-
-const selectedCity = ref({ name: 'Rome', code: 'RM' });
-const cities = ref([
-    { name: 'New York', code: 'NY' },
-    { name: 'Rome', code: 'RM' },
-    { name: 'London', code: 'LDN' },
-    { name: 'Istanbul', code: 'IST' },
-    { name: 'Paris', code: 'PRS' }
-]);
-
-const visible = ref(false);
-
-function showDialog() {
-  visible.value = true;
+  } catch (error) {
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+  } finally {
+    loading.value = false;
+  }
 }
 
-function load() {
-  testService.getTest().then((response) => {
-    console.log(response);
-  });
-}
+
+
+const chartData = ref();
+const chartOptions = ref();
 
 onMounted(() => {
-  load();
-});
-const menu = ref();
-const items = ref([
-  {
-    label: 'Options',
-    items: [
-        {
-          label: 'Refresh',
-          icon: 'pi pi-refresh'
-        },
-        {
-          label: 'Export',
-          icon: 'pi pi-upload'
-        }
-    ]
-  }
-]);
 
-const toggle = (event) => {
-    menu.value.toggle(event);
+  loadRecent();
+  loadUpcoming();
+  loadTeams();
+
+  chartData.value = setChartData();
+  chartOptions.value = setChartOptions();
+});
+
+const setChartData = () => {
+    return {
+        labels: ['Yuri Pavlovich Sokolov', 'Nastradamus', 'Jānis Ozoliņš', 'Jordan Basketfield'],
+        datasets: [
+            {
+                label: 'All time accuracy',
+                data: [51, 23, 69, 99],
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgb(255, 159, 64)',
+                borderWidth: 1
+            },
+            {
+                label: 'Last 10 accuracy',
+                data: [41, 33, 59, 89],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 1
+            },
+            {
+                label: 'Nominal accuracy',
+                data: [31, 43, 49, 79],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1
+            }
+        ]
+    };
 };
+const setChartOptions = () => {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    return {
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder
+                }
+            }
+        }
+    };
+}
+
 
 </script>
 <template>
   <div class="ba-main-form">
     <div class="ba-sticky-header">
       <div></div>
-      <h2>Sandbox</h2>
+      <h2>General</h2>
     </div>
-    
-    <div class="ba-row">
-      <div class="ba-row-flex " >
-        <Button label="Primary" />
-        <Button label="Secondary" severity="secondary" />
-        <Button label="Success" severity="success" />
-        <Button label="Info" severity="info" />
-        <Button label="Warning" severity="warning" />
-        <Button label="Help" severity="help" />
-        <Button label="Danger" severity="danger" />
-      </div>
-    </div>
-    <div class="ba-row">
-      <div class="ba-row-flex " >
-        <Toast />
-        <Button label="Success" severity="success" @click="showSuccess" />
-            <Button label="Info" severity="info" @click="showInfo" />
-            <Button label="Warn" severity="warning" @click="showWarn" />
-            <Button label="Error" severity="danger" @click="showError" />
+    <div class="ba-section">
+      <div class="games-viewer">
+          <div class="recent-games">
+            <GamesWidget :games="recentModels" :teams="teams" :recent="true" />
+          </div>
+          <div></div> 
+          <div class="upcoming-games upcoming">
+            <GamesWidget :games="upcommingModels" :teams="teams" :recent="false" />
+          </div>
       </div>
     </div>
-    <div class="ba-section-2">
-    <div class="ba-row-2">
-      <div class="ba-row-flex " >
-        <InputText type="text" v-model="textValue" />
-        <code>{{ textValue }}</code>
+    <div class="ba-section">
+      <h3>Models accuracy chart</h3>
+      <div class="models-chart">
+        <Chart type="bar" :data="chartData" :options="chartOptions" />
       </div>
     </div>
-    <div class="ba-row-2">
-      <div class="ba-row-flex " >
-        <InputText type="text" v-model="textValue" />
-        <code>{{ textValue }}</code>
-      </div>
-    </div>
-  </div>
-    <div class="ba-row">
-      <div class="ba-page-header">
-        <h2>Value picker</h2>
-      </div>
-      <div class="ba-row-flex " >
-        <Dropdown v-model="selectedCity" :options="cities" optionLabel="name" placeholder="Select a City" class="w-full md:w-14rem" />
-      <code>{{ selectedCity?.name }}</code>
-      </div>
-    </div>
-    <div class="ba-row">
-      <div class="ba-page-header">
-        <h2>Dialog</h2>
-      </div>
-      <div class="ba-row-flex" >
-        <Button label="Show" icon="pi pi-external-link" @click="showDialog" />
-        
-        <Dialog v-model:visible="visible" modal header="Header" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-              <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
-        </Dialog>
-        <code>{{ visible }}</code>
-      </div>
-    </div>
-    <div class="ba-row">
-      <div class="ba-page-header">
-        <h2>Menu</h2>
-      </div>
-      <div class="ba-row-flex " >
-        <div class="card flex justify-content-center">
-        <Button type="button" icon="pi pi-ellipsis-v" @click="toggle" aria-haspopup="true" aria-controls="overlay_menu" />
-        <Menu ref="menu" id="overlay_menu" :model="items" :popup="true" />
-    </div>
-      </div>
-    </div>
-    <div class="ba-section-2">
-      <div class="ba-row-2">
-        <div class="ba-row-flex " >
-          <InputText type="text" v-model="textValue" />
-          <code>{{ textValue }}</code>
-        </div>
-      </div>
-      <div class="ba-row-2">
-        <div class="ba-row-flex " >
-          <InputText type="text" v-model="textValue" />
-          <code>{{ textValue }}</code>
-        </div>
-      </div>
-    </div>
-    <div class="ba-row">
-      <DataTable :value="dataTemp" tableStyle="min-width: 50rem">
-            <Column field="code" header="Code"></Column>
-            <Column field="name" header="Name"></Column>
-            <Column field="category" header="Category"></Column>
-            <Column field="quantity" header="Quantity"></Column>
-        </DataTable>
-    </div>  
   </div>
 </template>
-  
+<style>
+
+.models-chart {
+  margin: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--surface-border);
+  border-radius: 15px;
+}
+.games-viewer {
+  display: grid;
+  justify-items: center; 
+  align-items: center; 
+  grid-template-columns: 1fr auto 1fr;
+}
+.games-viewer .recent-games {
+  justify-self: start; 
+  align-items: start;
+}
+.games-viewer .upcoming-games {
+  justify-self: end; 
+  align-items: end;
+}
+.recent-games,
+.upcoming-games {
+    width: 700px;
+}
+</style>

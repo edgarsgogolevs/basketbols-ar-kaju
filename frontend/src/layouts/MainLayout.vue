@@ -45,7 +45,7 @@ const currentTab = computed(() => {
         <div class="ba-nav-menu">
           <div class="ba-nav-menu-button" :class="{ 'selected': currentTab === '/sandbox'}" @click="goTo('sandbox')">
             <i class="mdi mdi-test-tube mdi-36px sandbox"></i>
-            <p class="ba-data">Sandbox</p>
+            <p class="ba-data">General</p>
           </div>
             <div class="ba-nav-menu-button" :class="{ 'selected': currentTab === '/models' || currentTab.startsWith('/model') }"  @click="goTo('models')">
             <i class="mdi mdi-brain mdi-36px models"></i>

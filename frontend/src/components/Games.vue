@@ -1,18 +1,21 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted,withDirectives  } from 'vue';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import Tooltip from 'primevue/tooltip';
+import Dialog from 'primevue/dialog';
 
 import useErrors from '@/hooks/useErrors';
 import modelsService from '@/services/modelsService';
 import router from '@/router';
 
+
 const errors = useErrors();
 
 const props = defineProps({
     games: { type: Array, default: null },
-    upcoming: { type: Number, default: 0 }
+    
 });
 
 const loading = ref(false);
@@ -32,18 +35,62 @@ async function loadTeams() {
     loading.value = false;
   }
 }
+const predictionsArray = ref();
+
+async function getPrediction(id) {
+  loading.value = true;
+
+  try {
+    const response1 = await modelsService.getPrediction(id, 1);
+    // const response2 = await modelsService.getPrediction(id, 2);
+    // const response3 = await modelsService.getPrediction(id, 3);
+    // const response4 = await modelsService.getPrediction(id, 4);
+    
+    // if (response1.status >= 200 && response1.status < 300 && response2.status >= 200 && response2.status < 300 && response3.status >= 200 && response3.status < 300 && response4.status >= 200 && response4.status < 300) {
+    //     predictionsArray.value = [response1.data, response2.data, response3.data, response4.data];
+    // }
+    if (response1.status >= 200 && response1.status < 300) {
+        predictionsArray.value = response1.data;
+    }
+    
+  } catch (error) {
+    console.error(error)
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+  } finally {
+    loading.value = false;
+  }
+}
 
 onMounted(() => {
      loadTeams();
 });
 
 function findLogo(id) {
+    if (!id) return 'https://static.thenounproject.com/png/1738131-200.png';
     const team = teams.value?.find(team => team.id === id);
-    return team.logo_url;
+    return team?.logo_url;
 }
 function findName(id) {
+    if (!id) return 'N/A';
     const team = teams.value?.find(team => team.id === id);
-    return team.name;
+    return team?.name;
+}
+
+function findAbbr(id) {
+    if (!id) return 'N/A';
+    const team = teams.value?.find(team => team.id === id);
+    return team?.abbr;
+}
+function concateAbbr(home, away) {
+    return findAbbr(home) + ' VS ' + findAbbr(away);
+}
+function concateName(home, away) {
+    return findName(home) + ' VS ' + findName(away);
+}
+function findConference(id) {
+    if (!id) return 'N/A';
+    const team = teams.value?.find(team => team.id === id);
+    return team.conference;
 }
 
 function formatDate(date) {
@@ -52,7 +99,27 @@ function formatDate(date) {
 }
 
 function predictGame(game) {
-    router.push({ name: 'predict', params: { id: game.id, home: game.team_home_id, away: game.team_away_id } });
+    console.log('Button');
+    // router.push({ name: 'predict', params: { id: game.id, home: game.team_home_id, away: game.team_away_id } });
+}
+
+function rowClicked(data) {
+    console.log('Row');
+    // console.log(data);
+}
+
+const visible = ref(false);
+const modalItem = ref(null)
+
+function showDialog(item) {
+    modalItem.value = item;
+    getPrediction(item.id);
+    visible.value = true;
+}
+
+function formatScore(score) {
+    if (!score) return 'N/A';
+    return score;
 }
 
 </script>
@@ -66,12 +133,16 @@ function predictGame(game) {
                     <p>{{ formatDate(item.data.game_date) }}</p>
                 </template>
             </Column>
-            <Column field="id" header="Game id" style="width: 5%"></Column>
-            <Column field="team_away_id" header="Team away id" style="width: 8%"></Column>
-            <Column field="team_home_id" header="Team home id" style="width: 8%"></Column>
-            <Column field="team_home_id" header="Match between" style="width: 10%">
+            <Column field="id" header="Game id" style="width: 5%">
                 <template #body="item">
-                    <div class="flex align-items-center gap-2">
+                    <p class="grid-link" @click="predictGame(item.data)">{{ item.data.id }}</p>
+                </template>
+            </Column>
+            <Column field="team_home_id" header="Team home id" style="width: 8%"></Column>
+            <Column field="team_away_id" header="Team away id" style="width: 8%"></Column>
+            <Column field="Match_between" header="Match between" style="width: 10%">
+                <template #body="item">
+                <div class="flex align-items-center gap-2">
                         <img alt="flag" :src="findLogo(item.data.team_home_id)" style="width: 40px" />
                         <p>VS</p>
                         <img alt="flag" :src="findLogo(item.data.team_away_id)" style="width: 40px" />
@@ -87,13 +158,45 @@ function predictGame(game) {
                     </div>
                 </template>
             </Column>
-            <Column v-if="upcoming === 0" field="team_home_id" header="Result" style="width: 8%"></Column>
-            <Column v-if="upcoming === 1" field="team_home_id" header="Prediction" style="width: 5%">
-                <template #body="item">
-                    <Button label="Predict" severity="Primary" @click="predictGame(item.data)" />
+            <Column field="buttons" header="" style="width: 8%">
+                <template #body="item"> 
+                    <span class="p-buttonset">
+                        <Button v-tooltip="'Open quick prediction'" outlined icon="pi pi-external-link" severity="Secondary" aria-label="Submit" @click="showDialog(item.data)" />
+                        <Button v-tooltip="'Open game page'" outlined icon="pi pi-arrow-right" severity="Secondary" aria-label="Submit" @click="predictGame(item.data)" />
+                    </span>
+                    
                 </template>
             </Column>
         </DataTable>
+        <Dialog v-model:visible="visible" modal  :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+            <template #header>
+                <h3>{{ `Game - ${concateAbbr(modalItem?.team_home_id, modalItem?.team_away_id)} (id: ${modalItem.id})`}}</h3>
+            </template>
+            <div class="modal-team-names">
+                <p class="team-conference" :class="[{ 'west': findConference(modalItem.team_home_id) === 'West'},
+                { 'east': findConference(modalItem.team_home_id) === 'East'}]">{{ findName(modalItem?.team_home_id) }}</p>
+                <p></p>
+                <p class="team-conference" :class="[{ 'west': findConference(modalItem.team_away_id) === 'West'},
+                { 'east': findConference(modalItem.team_away_id) === 'East'}]">{{ findName(modalItem?.team_away_id) }}</p>
+            </div>
+            <div class="modal-team-logos">
+                <img alt="flag" :src="findLogo(modalItem.team_home_id)" style="width: 120px" />
+                <p class="versus">VS</p>
+                <img alt="flag" :src="findLogo(modalItem.team_away_id)" style="width: 120px" />
+            </div>
+            <div class="quick-score">
+                <p>Home score: {{ formatScore(modalItem.score_home) }}</p>
+                <p>{{ formatDate(modalItem.game_date) }}</p>
+                <p>Away score: {{ formatScore(modalItem.score_away) }}</p> 
+            </div>
+            <div class="prediction-info">
+                <p>{{ predictionsArray }}</p>
+            </div>
+            <template #footer>
+                <Button label="Close" severity="secondary" @click="visible = false"  />
+                <Button label="Open game page" severity="primary"  @click="visible = false" autofocus />
+            </template>
+        </Dialog>
     </div>
 </template>
 
@@ -103,5 +206,30 @@ function predictGame(game) {
 }
 .team-away {
     color: #ff4500;
+}
+
+.p-datatable-tbody>[data-pc-section]:hover {
+    background-color: var(--color-data-table-background-hover); 
+}
+.grid-link {
+    color: var(--color-text);
+    text-decoration: underline;
+}
+.grid-link:hover {
+    cursor: pointer;
+    color: var(--color-link);
+}
+
+.modal-team-logos,
+.modal-team-names,
+.quick-score {
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    justify-items: center; 
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.quick-info {
+    margin-bottom: 1rem;
 }
 </style>
