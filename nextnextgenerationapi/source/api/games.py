@@ -29,6 +29,16 @@ def add_game():
     return {"message": "ok"}, 201
 
 
+@bp.route("/<int:game_id>", methods=["GET"])
+@marshal_with(GameSchema)
+def get_game(game_id: int):
+    data = db.select(f"SELECT {GAME_FIELDS} FROM basketball.games WHERE id=?",
+                     (game_id, ))
+    if not data:
+        return {"error": "Not found"}, 404
+    return data[0]
+
+
 @bp.route("/upcoming/<int:count>", methods=["GET"])
 @marshal_with(GameSchema(many=True, exclude=["team_home", "team_away"]))
 def upcoming_games(count: int):

@@ -2,35 +2,48 @@
 
 NBA game outcome prediction.
 
-### Saturs
+## Saturs
 
-- [Technology stack](#Technology-stack)
+- [Tehniskais risinājums](#Tehniskais-risinājums)
 - [Concept](#Concept)
 - [Lietotāju stāsti](#Lietotāju-stāsti)
 
-### Technology stack
 
-Frontend: 
- - Framework – Vue.js
- - Programming language – Javascript
- - Virtualization – Docker
- 
-Backend: 
- - Framework – Flask
- - Programming language – Python
- - Server – Waitress
- - Virtualization – Docker
- 
-Machine learning:
- - Framework – Scikit learn
- - Programming language – Python
- 
-Database: Azure SQL
+## Tehniskais risinājums
 
-Infrastructure:
- - Azure SQL servers
- - Azure BLOB storage
- - Azure Container App
+### Frontend
+
+| Satvars | Vue.js |
+| ---- | ---- |
+| Programmēšanas valoda | Javascript |
+| Tīmekļa serveris | Nginx |
+
+Tika pielietota client-side rendering pieeja. Piekļuve datu bāzei notiek caur HTTP pieprasījumiem uz API.
+
+### Backend
+
+| Satvars               | Flask  |
+| --------------------- | ------ |
+| Programmēšanas valoda | Python |
+| Tīmekļas serveris                      | Waitress       |
+
+Pieprasījumu un atbilžu validācijai tiek pielietota Marshmallow bibliotēka.
+
+### Datubāze
+
+Izmantotā datubāze ir Azure SQL server. Tās pamatā ir Microsoft SQL Server, kas izmanto Transact SQL dielektu.
+
+### Izmantotā infrastruktūra
+
+Visi resursi tika izvietoti Azure platformā.
+Datu bāze - Azure SQL server
+Frontent un Backend - Azure Container App
+Failu krātuve - Azure BLOB Storage
+
+## Algoritms
+
+Lai pareģotu basketbola spēles tika izmantota mašīnmācīšanās pieeja.
+
 
 ### Concept
 ![Concept model](./basketball_konceptu_modelis.excalidraw.png)

@@ -1,0 +1,6 @@
+azure-functions
+pandas
+numpy
+pyodbc
+pyodbc[unixodbc]
+nba-api
