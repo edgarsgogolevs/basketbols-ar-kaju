@@ -1,28 +1,23 @@
 import logging
 from os import environ
 
-formatter = logging.Formatter("%(asctime)s %(levelname)s [%(name)s]: %(message)s")
+formatter = logging.Formatter(
+    "%(asctime)s %(levelname)s [%(name)s]: %(message)s")
 
 root_logger = logging.getLogger()
 LOGLEVEL = environ.get("LOGLEVEL")
 if not LOGLEVEL or not isinstance(LOGLEVEL, str):
     raise ValueError("LOGLEVEL environment variable not set")
-logging.basicConfig(
-    level=LOGLEVEL, format="%(asctime)s %(levelname)s [%(name)s]: %(message)s"
-)
+logging.basicConfig(level=LOGLEVEL,
+                    format="%(asctime)s %(levelname)s [%(name)s]: %(message)s")
 root_logger.info("Logger initialized")
 
 from flask import Flask, request
 from flask_cors import CORS
 
-
 app = Flask(__name__)
 app.config["JSON_SORT_KEYS"] = False
 
-
-from modules.cache import cache
-
-cache.init_app(app)
 CORS(app)
 
 # Register blueprints
@@ -41,18 +36,19 @@ from apispec.ext.marshmallow import MarshmallowPlugin
 from apispec_webframeworks.flask import FlaskPlugin
 from apispec import APISpec
 
-app.config.update(
-    {
-        "APISPEC_SPEC": APISpec(
-            title="basketball-ar-kaju",
-            version="v1",
-            openapi_version="2.0",
-            plugins=[MarshmallowPlugin()],
-        ),
-        "APISPEC_SWAGGER_URL": "/swagger/",
-        "APISPEC_SWAGGER_UI_URL": "/swagger-ui/",
-    }
-)
+app.config.update({
+    "APISPEC_SPEC":
+    APISpec(
+        title="basketball-ar-kaju",
+        version="v1",
+        openapi_version="2.0",
+        plugins=[MarshmallowPlugin()],
+    ),
+    "APISPEC_SWAGGER_URL":
+    "/swagger/",
+    "APISPEC_SWAGGER_UI_URL":
+    "/swagger-ui/",
+})
 
 docs = FlaskApiSpec(app)
 docs.register_existing_resources()
@@ -80,14 +76,6 @@ def server_error(e):
 @app.route("/", methods=["GET"])
 def hello_word():
     return {"message": "Welcome to BasketBallArKaju API version 7.3"}
-
-
-# clear cache after POST, PUT, DELETE
-@app.after_request
-def clear_cache(res):
-    if request.method in ["POST", "PUT", "DELETE"]:
-        cache.clear()
-    return res
 
 
 # devel mode run
