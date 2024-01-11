@@ -3,16 +3,18 @@ import logging
 from flask_apispec import marshal_with, use_kwargs  # type: ignore
 
 from modules.db import Db
+from modules.games import GAME_STATS_COLS
 
 from schemas.GameSchema import GameSchema
 from schemas.ResponseSchemas import SuccessSchema
-
 
 lg = logging.getLogger("api.games")
 bp = Blueprint("games", __name__, url_prefix="/games")
 db = Db()
 
-GAME_FIELDS = "team_home as team_home_id, team_away as team_away_id, home_won, score_home, score_away, game_date, id"
+GAME_FIELDS = "team_home as team_home_id, team_away as team_away_id, home_won, score_home, score_away, game_date, id, " + ", ".join(
+    GAME_STATS_COLS)
+
 
 @bp.route("/", methods=["POST"])
 @use_kwargs(GameSchema(only=["team_home_id", "team_away_id", "game_date"]))
@@ -35,9 +37,9 @@ def upcoming_games(count: int):
         count = 1000
     data = db.select(
         f"SET ROWCOUNT ?;\
-        SELECT *\
+        SELECT {GAME_FIELDS}\
         FROM basketball.games where game_date > GETDATE() ORDER BY game_date ASC",
-        (count,),
+        (count, ),
     )
     if not data:
         return {"error": "Not found"}, 404
@@ -51,8 +53,8 @@ def recent_games(count: int):
         lg.warning("Count > 1000, setting to 1000")
         count = 1000
     data = db.select(
-        f"SET ROWCOUNT ?; SELECT * FROM basketball.games where game_date < GETDATE() and score_home is not null ORDER BY game_date DESC",
-        (count,),
+        f"SET ROWCOUNT ?; SELECT {GAME_FIELDS} FROM basketball.games where game_date < GETDATE() and score_home is not null ORDER BY game_date DESC",
+        (count, ),
     )
     if not data:
         return {"error": "Not found"}, 404
@@ -63,7 +65,7 @@ def recent_games(count: int):
 @marshal_with(GameSchema)
 def get_head_to_head_games(team1: int, team2: int):
     data = db.select(
-        f"SET ROWCOUNT 100; SELECT * \
+        f"SET ROWCOUNT 100; SELECT {GAME_FIELDS} \
         FROM basketball.games WHERE team_home=? AND team_away=? OR team_home=? AND team_away=? ORDER BY game_date",
         (team1, team2, team2, team1),
     )
