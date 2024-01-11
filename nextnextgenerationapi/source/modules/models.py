@@ -2,7 +2,6 @@ import logging
 
 from joblib import load  # type: ignore
 from modules.db import Db
-from schemas.GamePredictionSchema import ModelStatsSchema
 
 lg = logging.getLogger("modules.models")
 db = Db()
@@ -33,27 +32,27 @@ for model_id in MODEL_NAME_TO_ID_MAPPING:
     MODEL_ID_TO_MODEL_MAPPING[model_id] = model
 lg.info("All mappings created.")
 
+Q = """
+SET ROWCOUNT 1000;
+SELECT gp.*, g.* FROM
+basketball.game_predictions gp INNER JOIN basketball.games g
+ON gp.game_id=g.id
+WHERE gp.model_id=? AND gp.prediction_correct IS NOT NULL
+ORDER BY g.game_date DESC;
+"""
 
-def calculate_model_stats(model_id: int) -> ModelStatsSchema:
-    model_data = db.select(
-        "select * from basketball.prediction_models where id=?",
-        (model_id, ))[0]
-    ret = {"nominal_accuracy": model_data["nominal_precision"]}
-    q = """
-    SET ROWCOUNT 1000;
-    SELECT gp.*, g.* FROM
-    basketball.game_predictions gp INNER JOIN basketball.games g
-    ON gp.game_id=g.id
-    WHERE gp.model_id=? AND gp.prediction_correct IS NOT NULL
-    ORDER BY g.game_date DESC;
-    """
-    last_preds = db.select(q, (model_id, ))
+GAME_STATS_COLS = ['MIN', 'FGM', 'FGA', 'FG_PCT',
+       'FG3M', 'FG3A', 'FG3_PCT', 'FTM', 'FTA', 'FT_PCT', 'OREB', 'DREB',
+       'REB', 'AST', 'STL', 'BLK', 'TOV', 'PF']
+
+def calculate_model_stats(model_id: int) -> dict:
+    ret = {}
+    last_preds = db.select(Q, (model_id, ))
     last_ten = last_preds[:10]
     all_time_acc = calculate_accuracy(last_preds)
     last_ten_acc = calculate_accuracy(last_ten)
     ret["last_ten_accuracy"] = last_ten_acc
     ret["all_time_accuracy"] = all_time_acc
-    ret["prediction_history"] = create_history(last_preds)
     return ret
 
 
@@ -65,7 +64,8 @@ def calculate_accuracy(last_preds: list[dict]) -> float:
     return correct_preds / len(last_preds)
 
 
-def create_history(last_preds: list[dict]) -> list[dict]:
+def create_history(model_id: int) -> list[dict]:
+    last_preds = db.select(Q, (model_id, ))
     history: list[dict] = []
     for rec in reversed(last_preds):
         game = {
@@ -76,6 +76,9 @@ def create_history(last_preds: list[dict]) -> list[dict]:
             "score_home": rec["score_home"],
             "score_away": rec["score_away"],
         }
+        for col in GAME_STATS_COLS:
+            if col in rec:
+                game[col] = rec[col]
         pred = {
             "game": game,
             "game_id": rec["game_id"],

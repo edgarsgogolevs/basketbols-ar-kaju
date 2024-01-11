@@ -23,7 +23,6 @@ def add_game():
     Look up suggested game on nba website or api
     and insert it to db.
     """
-    responses = {201: {"Description": "Created", "model": SuccessSchema}}
     # TODO: Implement
     return {"message": "ok"}, 201
 
@@ -36,7 +35,7 @@ def upcoming_games(count: int):
         count = 1000
     data = db.select(
         f"SET ROWCOUNT ?;\
-        SELECT id, team_home as team_home_id, team_away as team_away_id, game_date\
+        SELECT *\
         FROM basketball.games where game_date > GETDATE() ORDER BY game_date ASC",
         (count,),
     )
@@ -52,7 +51,7 @@ def recent_games(count: int):
         lg.warning("Count > 1000, setting to 1000")
         count = 1000
     data = db.select(
-        f"SET ROWCOUNT ?; SELECT {GAME_FIELDS} FROM basketball.games where game_date < GETDATE() and score_home is not null ORDER BY game_date DESC",
+        f"SET ROWCOUNT ?; SELECT * FROM basketball.games where game_date < GETDATE() and score_home is not null ORDER BY game_date DESC",
         (count,),
     )
     if not data:
@@ -64,7 +63,7 @@ def recent_games(count: int):
 @marshal_with(GameSchema)
 def get_head_to_head_games(team1: int, team2: int):
     data = db.select(
-        f"SET ROWCOUNT 100; SELECT {GAME_FIELDS} \
+        f"SET ROWCOUNT 100; SELECT * \
         FROM basketball.games WHERE team_home=? AND team_away=? OR team_home=? AND team_away=? ORDER BY game_date",
         (team1, team2, team2, team1),
     )

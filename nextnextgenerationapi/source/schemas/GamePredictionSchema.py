@@ -1,14 +1,33 @@
 from marshmallow import Schema, fields, EXCLUDE, validate
-from schemas.ModelSchema import ModelSchema
 from schemas.GameSchema import GameSchema
 
 from modules.db import Db
 
 db = Db()
 
-model_ids = [model["id"] for model in db.select("SELECT id FROM basketball.prediction_models")]
+model_ids = [
+    model["id"]
+    for model in db.select("SELECT id FROM basketball.prediction_models")
+]
+
+
+class ModelSchema(Schema):
+
+    class Meta:
+        unknown = EXCLUDE
+
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    description = fields.Str()
+    profile_picture = fields.Url()
+    picture_small = fields.Url()
+    nominal_precision = fields.Float()
+    last_ten_accuracy = fields.Float()
+    all_time_accuracy = fields.Float()
+
 
 class GamePredictionSchema(Schema):
+
     class Meta:
         unknown = EXCLUDE
 
@@ -22,16 +41,17 @@ class GamePredictionSchema(Schema):
     updated_at = fields.DateTime()
 
 
-class ModelStatsSchema(Schema):
+class ModelHistorySchema(Schema):
+
     class Meta:
         unknown = EXCLUDE
+    model_id = fields.Int(required=True)
+    history = fields.List(
+        fields.Nested(GamePredictionSchema(exclude=["model"])), required=True)
 
-    nominal_accuracy = fields.Float()
-    last_ten_accuracy = fields.Float()
-    all_time_accuracy = fields.Float()
-    prediction_history = fields.List(fields.Nested(GamePredictionSchema(exclude=["model"])))
 
 class GamePredictionRequestSchema(Schema):
+
     class Meta:
         unknown = EXCLUDE
 
