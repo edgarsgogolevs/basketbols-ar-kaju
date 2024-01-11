@@ -29,7 +29,7 @@ const games = ref();
 async function loadUpcomingGames() {
   loading.value = true;
   try {
-    const response = await modelsService.getUpcomingGames(1000);
+    const response = await modelsService.getUpcomingGames(100);
     if (response.status >= 200 && response.status < 300) {
         games.value = response.data;
     }
@@ -43,7 +43,7 @@ async function loadUpcomingGames() {
 async function loadRecentGames() {
   loading.value = true;
   try {
-    const response = await modelsService.getRecentGames(1000);
+    const response = await modelsService.getRecentGames(100);
     if (response.status >= 200 && response.status < 300) {
         games.value = response.data;
     }
@@ -67,7 +67,7 @@ onMounted(() => {
 
 </script>
 <template>
-  <div class="ba-main-form">
+<div class="ba-main-form">
     <div class="ba-sticky-header">
         <div></div>
         <h2>Games</h2>

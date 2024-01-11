@@ -61,6 +61,7 @@ main {
   color: var(--color-nav-text);
   background-image: url('@/assets/background-image.jpg');
   background-size: cover;
+  background-attachment: fixed;
   background-position: center center;
   background-repeat: no-repeat;
 }
@@ -342,8 +343,7 @@ main {
 }
 .team-card:hover {
   box-shadow: 0 0 11px var(--color-box-shadow-orange);
-  cursor: pointer;
-  background-color: var(--color-nav-background-hover);
+  /* background-color: var(--color-nav-background-hover); */
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .team-logo {
@@ -379,4 +379,51 @@ main {
 .team-link {
   color: var(--color-nav-text);
   text-decoration: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  box-shadow: 0 0 11px rgb(35, 1, 69);
+  border-radius: 4px;
+  padding: 1rem;
+  cursor: pointer;
+  background-color: var(--color-area);
+  transition: transform 0.1s; 
+  transform-style: preserve-3d;
+}
+.card:hover {
+  box-shadow: 0 0 11px var(--color-box-shadow-orange);
+}
+
+.card-header {
+font-weight: bold;
+margin-bottom: 0.5rem;
+}
+.card-content {
+  min-height: 300px;
+}
+
+.card-footer {
+margin-top: 0.5rem;
+}
+.knob-card {
+  margin-bottom: 2rem;
+}
+.card-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 12rem;
+  align-items: center;
+}
+.card-image-overlay {
+  width: 90%;
+  height: 101%;
+  border: 2px solid var(--color-border);
+  background-image: url('../assets/back-static.png');
+}
+.card:hover .card-image-overlay {
+  background-image: url('../assets/back.gif');
 }
