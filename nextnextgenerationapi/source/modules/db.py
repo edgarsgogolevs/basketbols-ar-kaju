@@ -37,6 +37,7 @@ class Db:
             self.lg.warning(f"Could not establish connection to database. Retrying...")
             self.conn_retry_count += 1
             return self.establish_connection()
+        self.conn_retry_count = 0
 
     def check_connection(self):
         try:
