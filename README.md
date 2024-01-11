@@ -10,27 +10,38 @@ NBA game outcome prediction.
 
 
 ## Tehniskais risinājums
+
 ### Frontend
+
 | Satvars | Vue.js |
 | ---- | ---- |
 | Programmēšanas valoda | Javascript |
 | Tīmekļa serveris | Nginx |
+
 Tika pielietota client-side rendering pieeja. Piekļuve datu bāzei notiek caur HTTP pieprasījumiem uz API.
+
 ### Backend
+
 | Satvars               | Flask  |
 | --------------------- | ------ |
 | Programmēšanas valoda | Python |
 | Tīmekļas serveris                      | Waitress       |
+
 Pieprasījumu un atbilžu validācijai tiek pielietota Marshmallow bibliotēka.
+
 ### Datubāze
+
 Izmantotā datubāze ir Azure SQL server. Tās pamatā ir Microsoft SQL Server, kas izmanto Transact SQL dielektu.
+
 ### Izmantotā infrastruktūra
+
 Visi resursi tika izvietoti Azure platformā.
 Datu bāze - Azure SQL server
 Frontent un Backend - Azure Container App
 Failu krātuve - Azure BLOB Storage
 
 ## Algoritms
+
 Lai pareģotu basketbola spēles tika izmantota mašīnmācīšanās pieeja.
 
 
