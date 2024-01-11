@@ -71,7 +71,7 @@ watch(() => props.predictions,
                     {{ findModelById(item.model_id).name  }}
                 </div>
                 <div class="card-prediction">
-                    <p class="probability ba-description" >Win probability</p>
+                    <p class="probability ba-description" >Chance of home winning</p>
                     <ProgressBar v-tooltip="`${(item.home_winning_proba * 100).toFixed(2)}%`" type="text" placeholder="Top" :value="(item.home_winning_proba * 100).toFixed(0)" ></ProgressBar>
                 </div>
             </div>
@@ -86,6 +86,9 @@ watch(() => props.predictions,
 </template>
 
 <style>
+.card-prediction {
+    margin-bottom: 0.5rem;
+}
 .average-win-probability {
     display: grid;
     align-items: center;
@@ -93,11 +96,10 @@ watch(() => props.predictions,
 }
 .average-win-probability .flex {
     align-self: center;
-    justify-self: center
-}
-.ba-primary {
+    justify-self: center;
     margin-bottom: 1rem;
 }
+
 .ba-tooltip {
     margin-left: 0.2rem;
     margin-right: 0.2rem;

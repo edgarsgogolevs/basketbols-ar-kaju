@@ -132,6 +132,8 @@ const setChartOptions = () => {
                 }
             },
             y: {
+                min: 0,
+                max: 100, 
                 beginAtZero: true,
                 ticks: {
                     color: textColorSecondary
@@ -173,28 +175,4 @@ const setChartOptions = () => {
 </template>
 <style>
 
-.models-chart {
-  margin: 1rem;
-  padding: 1rem;
-  border: 2px solid var(--surface-border);
-  border-radius: 15px;
-}
-.games-viewer {
-  display: grid;
-  justify-items: center; 
-  align-items: center; 
-  grid-template-columns: 1fr auto 1fr;
-}
-.games-viewer .recent-games {
-  justify-self: start; 
-  align-items: start;
-}
-.games-viewer .upcoming-games {
-  justify-self: end; 
-  align-items: end;
-}
-.recent-games,
-.upcoming-games {
-    width: 700px;
-}
 </style>

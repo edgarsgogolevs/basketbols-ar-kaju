@@ -135,6 +135,15 @@ function formatScore(score) {
     if (!score) return 'N/A';
     return score;
 }
+function calculateClass(homeWon, check) {
+    if (!check) {
+      return 'bold';
+    }
+    if (homeWon === undefined || homeWon === null) {
+      return 'bold';
+    }
+    return homeWon ? 'winner' : 'loser';
+}
 
 </script>
 
@@ -203,11 +212,11 @@ function formatScore(score) {
                 <p class="versus">VS</p>
                 <img alt="flag" :src="findLogo(modalItem.team_away_id)" style="width: 120px" />
             </div>
+
             <div class="quick-score">
-                <p>Home score: {{ formatScore(modalItem.score_home) }}</p>
-                <!-- <p class="ba-description">{{ formatDate(modalItem.game_date) }}</p> -->
+                <p>Home score: <span class="bold" :class="calculateClass(modalItem.home_won, modalItem.score_home)">{{ formatScore(modalItem.score_home) }}</span></p>
                 <i class="pi pi-calendar" style="font-size: 2rem" v-tooltip="formatDate(modalItem.game_date)" type="text"></i>
-                <p>Away score: {{ formatScore(modalItem.score_away) }}</p> 
+                <p>Away score: <span class="bold" :class="calculateClass(!modalItem.home_won, modalItem.score_home)">{{ formatScore(modalItem.score_away) }}</span></p> 
             </div>
             <div class="prediction-info">
                 <SmallPrediction :predictions="predictionsArray" :models="models" />
@@ -220,6 +229,13 @@ function formatScore(score) {
     </div>
 </template>
 <style>
+
+.winner {
+    color: #eecd12;
+}
+.loser {
+    color: #FF6666;
+}
 .team-pos {
     margin-bottom: 0.5rem;
 }

@@ -74,10 +74,7 @@ function redirectToModel(modelId) {
         <Card @click="redirectToModel(model.id)" :allTimeAcc="66" :lastTimeAcc="30" :nominalAcc="(model.nominal_precision * 100).toFixed(0)" :image="choseImage(model.id)">
           <template #header>{{ model.name }}</template>
         </Card>
-        <div class="card-description">
-          <h3>Description</h3>
-          <div class="ba-data justify-text">{{ model.description }}</div>
-        </div>
+        
       </div>
     </div>
     <div class="ba-row ba-start-row">

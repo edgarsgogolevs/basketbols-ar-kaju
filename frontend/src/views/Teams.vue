@@ -3,7 +3,6 @@ import { ref, onMounted } from 'vue';
 
 import Teams from '@/components/Teams.vue';
 
-import { ProductService } from '@/services/ProductService';
 import modelsService from '@/services/modelsService';
 
 import useErrors from '@/hooks/useErrors';
@@ -22,15 +21,12 @@ async function load() {
     if (response.status >= 200 && response.status < 300) {
         teams.value = response.data;
     }
-    console.log(teams.value)
   } catch (error) {
     errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
   } finally {
     loading.value = false;
   }
 }
-
-const products = ref();
 
 onMounted(() => {
     load();

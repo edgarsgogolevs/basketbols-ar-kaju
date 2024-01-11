@@ -290,6 +290,7 @@ main {
 .card-description {
   padding: 1rem;
   border: 2px solid var(--color-border);
+  border-radius: 15px;
 }
 
 .breadcrumbs-item a {
@@ -321,7 +322,7 @@ main {
   font-weight: bold;
 }
 .versus {
-  color: var(--color-nav-text);
+  color: var(--color-versus);
   font-weight: bold;
   font-size: 1.2rem;
   margin: 0 0.5rem;
@@ -426,4 +427,71 @@ margin-top: 0.5rem;
 }
 .card:hover .card-image-overlay {
   background-image: url('../assets/back.gif');
+}
+
+.divider {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.team-home-info>.flex>i {
+  margin: 0.5rem;
+}
+.color-brand-icon {
+  color: var(--color-brand-icon)
+}
+.team-home-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center;
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+}
+.team-home-info .team-conference {
+  margin: 0;
+}
+.flex {
+  display: flex;
+  align-items: center;
+}
+.bold {
+  font-weight: bold;
+}
+.model-image {
+  /* background-image: url('../assets/back.gif'); */
+  background-color: rgb(48, 97, 97);
+  padding: 0.7rem;
+  max-width: 560px;
+  max-height: 560px;
+  border-radius: 15px;
+}
+
+.models-chart {
+  margin: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--surface-border);
+  border-radius: 15px;
+}
+.games-viewer {
+  display: grid;
+  justify-items: center; 
+  align-items: center; 
+  grid-template-columns: 1fr auto 1fr;
+}
+.games-viewer .recent-games {
+  justify-self: start; 
+  align-items: start;
+}
+.games-viewer .upcoming-games {
+  justify-self: end; 
+  align-items: end;
+}
+.recent-games,
+.upcoming-games {
+    width: 700px;
+}
+
+.breadcrumbs-item:hover a {
+  cursor: pointer;
+  color: var(--color-nav-text-hover);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }

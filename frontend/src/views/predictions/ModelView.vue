@@ -1,18 +1,10 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-import Card from '@/components/Card.vue';
-import Column from 'primevue/column';
-import DataTable from 'primevue/datatable';
-
 import modelsService from '@/services/modelsService';
 import useErrors from '@/hooks/useErrors';
 
-import Yuri_Pavlovich_Sokolov from '@/assets/png/Yuri_Pavlovich_Sokolov.png';
-import Janis_Ozolins from '@/assets/png/Janis_Ozolins.png'; 
-import Jordan_Basketfield from '@/assets/png/Jordan_Basketfield.png'; 
-import Nostradamus from '@/assets/png/Nostradamus.png';
-
+import Chart from 'primevue/chart';
 
 const props = defineProps({
     id: { type: Number}
@@ -20,16 +12,31 @@ const props = defineProps({
 
 const errors = useErrors();
 
-const models = ref();
+const model = ref();
 
 const loading = ref(false);
 
-async function load() {
+async function loadModel() {
   loading.value = true;
   try {
     const response = await modelsService.getModelById(props.id);
     if (response.status >= 200 && response.status < 300) {
-      models.value = response.data;
+      model.value = response.data;
+    }
+  } catch (error) {
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+  } finally {
+    loading.value = false;
+  }
+}
+
+const modelStats = ref();
+async function loadModelStats() {
+  loading.value = true;
+  try {
+    const response = await modelsService.getModelStats(props.id);
+    if (response.status >= 200 && response.status < 300) {
+        modelStats.value = response.data;
     }
     console.log(response.data);
 
@@ -40,28 +47,83 @@ async function load() {
   }
 }
 
+const chartData = ref();
+const chartOptions = ref();
+
+function setChartData() {
+    return {
+        labels: [''],
+        datasets: [
+            {
+                label: 'All time accuracy %',
+                data: [modelStats.value?.all_time_accuracy * 100],
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgb(255, 159, 64)',
+                borderWidth: 1
+            },
+            {
+                label: 'Last 10 accuracy %',
+                data: [modelStats.value?.last_ten_accuracy * 100],
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 1
+            },
+            {
+                label: 'Nominal accuracy %',
+                data: [modelStats.value?.nominal_accuracy * 100],
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgb(54, 162, 235)',
+                borderWidth: 1
+            }
+        ]
+    };
+};
+function setChartOptions() {
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    return {
+        plugins: {
+            legend: {
+                labels: {
+                    color: textColor
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder
+                }
+            },
+            y: {
+                min: 0,
+                max: 100, 
+                beginAtZero: true,
+                ticks: {
+                    color: textColorSecondary
+                },
+                grid: {
+                    color: surfaceBorder
+                }
+            }
+        }
+    };
+}
+
 onMounted(() => {
-  load();
+    loadModel();
+    loadModelStats();
+
+    setTimeout(() => {
+        chartData.value = setChartData();
+        chartOptions.value = setChartOptions();
+    }, 300);
 });
-
-function choseImage(id) {
-  switch (id) {
-    case 1:
-      return Yuri_Pavlovich_Sokolov;
-    case 3:
-      return Janis_Ozolins;
-    case 4:
-      return Jordan_Basketfield;
-    case 2:
-      return Nostradamus;
-    default:
-      return Yuri_Pavlovich_Sokolov;
-  }
-}
-
-function testFunc() {
-  console.log('test');
-}
 
 </script>
 <template>
@@ -81,25 +143,40 @@ function testFunc() {
           <router-link to="/models">Models</router-link>
         </div>    
     </div>
-      <h2>Models</h2>
+      <h2>{{ model?.name }}</h2>
     </div>
-    <div class="ba-form-label">
-      <p class="ba-description">Choose and click on model to get predictions from it</p>
-    </div>
-
-    <div class="models-card-wrapper">
-      <div class="model-empty-wrapper" v-for="model in models" :key="model.id">
-        <Card @click="testFunc" :allTimeAcc="66" :lastTimeAcc="30" :nominalAcc="(model.nominal_precision * 100).toFixed(0)" :image="choseImage(model.id)">
-          <template #header>{{ model.name }}</template>
-        </Card>
-        <div class="card-description">
-          <h3>Description</h3>
-          <div class="ba-data justify-text">{{ model.description }}</div>
+    <div class="ba-section padding-top-2">
+        <div class="model-card">
+            <div class="model-image">
+                <img :src="model?.profile_picture" alt="model image" />
+            </div>
+            <div class="card-description">
+                <h3>Stats</h3>
+                <div class="models-chart">
+                    <Chart type="bar" :data="chartData" :options="chartOptions" />
+                </div>
+                <h3>Description</h3>
+                <div class="ba-data justify-text ba-description">{{ model?.description }}</div>
+            </div>
         </div>
-      </div>
-    </div>
-    <div class="ba-row ba-start-row">
-      <p class="small-text">The development team is not responsible for anger AI or for your money if you decide to bet using our software</p>
     </div>
   </div>
 </template>
+<style>
+.padding-top-2 {
+    padding-top: 2rem;
+}
+.model-image>img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+}
+.model-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 1rem;
+    align-items: center;
+    justify-items: center;
+}
+</style>
