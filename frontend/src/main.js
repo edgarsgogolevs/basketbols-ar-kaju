@@ -6,6 +6,7 @@ import PrimeVue from 'primevue/config';
 import  ToastService  from 'primevue/toastservice';
 
 import Tooltip from 'primevue/tooltip';
+import AnimateOnScroll from 'primevue/animateonscroll';
 
 import events from './router/events';
 
@@ -33,6 +34,7 @@ app.use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.directive('tooltip', Tooltip);
+app.directive('animateonscroll', AnimateOnScroll);
 
 // maount app
 app.mount('#app');

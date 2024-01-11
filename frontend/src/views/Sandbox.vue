@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
 import Dropdown from 'primevue/dropdown';
@@ -21,6 +21,7 @@ import useErrors from '@/hooks/useErrors';
 const errors = useErrors();
 
 const loading = ref(false);
+const models = ref();
 const recentModels = ref();
 const upcommingModels = ref();
 const teams = ref();
@@ -66,42 +67,95 @@ async function loadTeams() {
   }
 }
 
+async function loadModels() {
+  loading.value = true;
+  try {
+    const response = await modelsService.getAllModels();
+    if (response.status >= 200 && response.status < 300) {
+      models.value = response.data;
+
+    }
+  } catch (error) {
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+  } finally {
+    loading.value = false;
+  }
+}
+
 
 
 const chartData = ref();
 const chartOptions = ref();
 
-onMounted(() => {
+watch(() => models.value,
+  () => {
+    chartData.value = setChartData();
+    chartOptions.value = setChartOptions();
+  }
+);
 
+onMounted(() => {
   loadRecent();
   loadUpcoming();
   loadTeams();
-
-  chartData.value = setChartData();
-  chartOptions.value = setChartOptions();
+  loadModels();
 });
 
-const setChartData = () => {
+function fillArrayOfAccuracties(id) {
+  const array = [];
+  if (!models.value) {
+    return array;
+  }
+  
+  switch (id) {
+    case 1:
+      for (let i = 0; i < models.value.length; i++) {
+        array.push((models.value[i].all_time_accuracy*100).toFixed(2));
+      }
+
+      return array;
+    case 2:
+      for (let i = 0; i < models.value.length; i++) {
+        array.push((models.value[i].last_ten_accuracy*100).toFixed(2));
+      }
+
+      return array;
+    case 3:
+      for (let i = 0; i < models.value.length; i++) {
+        array.push((models.value[i].nominal_precision*100).toFixed(2));
+      }
+
+      return array;
+    default:
+      for (let i = 0; i < models.value.length; i++) {
+        array.push((models.value[i].all_time_accuracy*100).toFixed(2));
+      }
+
+      return array;
+  }
+}
+
+function setChartData() {
     return {
         labels: ['Yuri Pavlovich Sokolov', 'Nastradamus', 'Jānis Ozoliņš', 'Jordan Basketfield'],
         datasets: [
             {
                 label: 'All time accuracy',
-                data: [51, 23, 69, 99],
+                data: fillArrayOfAccuracties(1),
                 backgroundColor: 'rgba(255, 159, 64, 0.2)',
                 borderColor: 'rgb(255, 159, 64)',
                 borderWidth: 1
             },
             {
                 label: 'Last 10 accuracy',
-                data: [41, 33, 59, 89],
+                data: fillArrayOfAccuracties(2),
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 borderWidth: 1
             },
             {
                 label: 'Nominal accuracy',
-                data: [31, 43, 49, 79],
+                data: fillArrayOfAccuracties(3),
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgb(54, 162, 235)',
                 borderWidth: 1
@@ -109,7 +163,7 @@ const setChartData = () => {
         ]
     };
 };
-const setChartOptions = () => {
+function setChartOptions(){
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
     const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');

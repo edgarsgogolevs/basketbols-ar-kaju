@@ -17,9 +17,9 @@ export default {
             console.error(error);
         }
     },
-    async getModelStats(id) {
+    async getModel(id) {
         try {
-            const response = await api().get(`/models/${id}/stats`);
+            const response = await api().get(`/models/${id}`);
             return response;
         } catch (error) {
             console.error(error);

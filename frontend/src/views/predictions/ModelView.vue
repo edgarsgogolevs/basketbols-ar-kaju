@@ -12,6 +12,10 @@ const props = defineProps({
 
 const errors = useErrors();
 
+const modelStandartDescription = ref('In the NBA, there is an indicator called PLUS_MINUS. This indicator can be positive or negative. It shows how well the team played overall. A team is taken and the average PLUS_MINUS is calculated when that team played at home. Then the opposing team is taken and the PLUS_MINUS is calculated, but when they are away. The difference between the matches between the two teams is then calculated. These radicals are used to train the model as input data X, and the win or loss is data Y. And so on for each game. Ready-made machine learning algorithms are used to make predictions.');
+const usedAlgoritmName = ref('');
+const usedAlgoritmText = ref('')
+const usedImage = ref('');
 const model = ref();
 
 const loading = ref(false);
@@ -34,11 +38,10 @@ const modelStats = ref();
 async function loadModelStats() {
   loading.value = true;
   try {
-    const response = await modelsService.getModelStats(props.id);
+    const response = await modelsService.getModel(props.id);
     if (response.status >= 200 && response.status < 300) {
         modelStats.value = response.data;
     }
-    console.log(response.data);
 
   } catch (error) {
     errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
@@ -70,7 +73,7 @@ function setChartData() {
             },
             {
                 label: 'Nominal accuracy %',
-                data: [modelStats.value?.nominal_accuracy * 100],
+                data: [modelStats.value?.nominal_precision * 100],
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgb(54, 162, 235)',
                 borderWidth: 1
@@ -115,6 +118,36 @@ function setChartOptions() {
     };
 }
 
+function setModelData() {
+  switch (props.id) {
+    case 1:
+        usedAlgoritmName.value = 'Support Vector Machine';
+        usedAlgoritmText.value = 'Searches for the optimal hyperplane for separating classes in the data. The basic idea is to maximise the difference between classes using support vectors. The model is trained to find the optimal hyperplane with maximum spacing and can be used to predict whether new objects belong to classes.';
+        usedImage.value = 'https://media.geeksforgeeks.org/wp-content/uploads/20231109124312/Hinge-loss-(2).png';
+    return;
+    case 2:
+        usedAlgoritmName.value = 'Random Forest Classifier';
+        usedAlgoritmText.value = 'Set up a decision tree group Each tree is trained using a random subsample of the data and random features. The voting of the trees leads the model to make a prediction on the new data. RandomForestClassifier is efficient, robust to overtraining and able to estimate the importance of features.';
+        usedImage.value = 'https://media.geeksforgeeks.org/wp-content/uploads/20200516180708/Capture482.png';
+    return;
+    case 3:
+        usedAlgoritmName.value = 'Logistic regression';
+        usedAlgoritmText.value = 'Is inherited for binary classification. It creates an equation by combining the weights, converts it into a probability using a logistic function, and makes a decision based on that probability. The model is trained by optimising the weights so that its predictions are closer to the real data.';
+        usedImage.value = 'https://miro.medium.com/v2/resize:fit:832/1*eMimR6WxLvcctZsvQ8UPIQ.png';
+    return;
+    case 4:
+        usedAlgoritmName.value = 'XGBoost Classifier';
+        usedAlgoritmText.value = 'Base uses many decision trees together. We give it the data and specify what we want to predict (whether a team will win or not). The model learns from this data, builds many trees, and each new tree tries to correct the mistakes of the previous trees. Eventually we have an ensemble of (many together) trees that work together to give an accurate prediction on the new data.';
+        usedImage.value = 'https://media.geeksforgeeks.org/wp-content/uploads/20210707140911/Boosting.png';
+    return;
+
+    default:
+        usedImage.value = 'https://media.geeksforgeeks.org/wp-content/uploads/20210707140911/Boosting.png';
+    return;
+  }
+
+}
+
 onMounted(() => {
     loadModel();
     loadModelStats();
@@ -122,6 +155,7 @@ onMounted(() => {
     setTimeout(() => {
         chartData.value = setChartData();
         chartOptions.value = setChartOptions();
+        setModelData();
     }, 300);
 });
 
@@ -159,10 +193,133 @@ onMounted(() => {
                 <div class="ba-data justify-text ba-description">{{ model?.description }}</div>
             </div>
         </div>
+        <div class="model-schema">
+            <div class="divider-with-line"></div>
+            <h3>How model works</h3>
+            <div class="schema-fades">
+                <div v-animateonscroll="{ enterClass: 'fadein', leaveClass: 'fadeout' }" class="ba-data justify-text ba-description">
+                    <div class="description-block">
+                        <h4>Overall description</h4>
+                        <p>{{ modelStandartDescription }}</p>
+                    </div>
+                </div>
+                <div class="flex gap" v-animateonscroll="{ enterClass: 'fadein', leaveClass: 'fadeout' }">
+                    <div v-animateonscroll="{ enterClass: 'fadeinleft', leaveClass: 'fadeoutleft' }"
+                    class="algoritm-description animations">
+                        <div class="column">
+                            <i class="pi pi-spin pi-cog" style="font-size: 2rem"></i>
+                            <h3 class="tiny">Algoritm</h3>
+                            <h3 >{{ usedAlgoritmName }}</h3>
+                        </div> 
+                    </div>
+                <div v-animateonscroll="{ enterClass: 'fadeinright', leaveClass: 'fadeoutright' }"
+                 class="large-box animations">
+                 <div class="badge">
+                            <i class="pi pi-info-circle" style="font-size: 2rem"></i>
+                        </div>
+                    <p>{{ usedAlgoritmText }}</p>
+                </div>
+                </div>
+                <div v-animateonscroll="{ enterClass: 'scalein', leaveClass: 'fadeout' }">
+                    <div class="shema animations">
+                        <h3>Schema</h3>
+                        <img :src="usedImage" alt="shema" />
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
   </div>
 </template>
 <style>
+.shema.animations {
+    animation-timing-function: cubic-bezier(.25,.46,.45,.94) !important;
+    animation-duration: 2000ms !important;
+}
+.shema img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 15px;
+
+}
+.badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--color-brand-text);
+    margin-bottom: 1rem;
+
+}
+.tiny {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.flex.gap {
+    gap: 2rem;
+
+}
+.large-box {
+    height: 20rem;
+    width: 20rem;
+    padding: 1rem;
+    border: 1px solid var(--color-description-text);
+    border-radius: 7px;
+}
+.large-box p {
+    text-align: justify;
+    color: var(--color-description-text)
+}
+.algoritm-description .flex {
+    margin: 1rem;
+}
+.column>i {
+    color: var(--color-brand-icon);
+}
+
+.animations {
+    animation-timing-function: cubic-bezier(.25,.46,.45,.94) !important;
+    animation-duration: 1000ms !important;
+}
+.ba-data.justify-text.ba-description {
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 2) !important;
+    animation-duration: 1000ms !important;
+}
+.schema-fades .flex {
+    align-self: center;
+}
+
+.description-block {
+    border: 1px solid var(--color-description-text);
+    border-radius: 7px;
+    padding: 1rem;
+    width: 40rem;
+}
+.description-block p {
+    color: var(--color-large-text);
+}
+.description-block h4 {
+    color: var(--color-text);
+}
+.schema-fades {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    place-items: center;
+    gap: 3rem;
+}
+
+.divider-with-line {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin: 1rem 0;
+    border: 1px solid var(--color-description-text);
+    border-radius: 50%;
+}
 .padding-top-2 {
     padding-top: 2rem;
 }
