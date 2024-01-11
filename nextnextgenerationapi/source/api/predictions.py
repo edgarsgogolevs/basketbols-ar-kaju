@@ -36,23 +36,3 @@ def get_models_predicted_games(model_id: int):
     if not data:
         return {"error": "Not found"}, 404
     return data
-
-
-# @bp.route("/<string:model>", methods=["GET"])
-# @modules.validate.schema(PredictGameRequestSchema)
-# def predict_game_outcome(model: str):
-#     lg.info("Predicting game outcome with logistic regression")
-#     data = request.parsed["PredictGameRequest"] # type: ignore
-#     model_obj = models.MODEL_MAPPING[model]
-#     team_home = data["team_home"]
-#     team_away = data["team_away"]
-#     predict_home_win, predict_winning_probability = predict_games(
-#         model_obj, team_home, team_away
-#     )
-#     ret = {
-#         "team_home": team_home,
-#         "team_away": team_away,
-#         "predict_home_win": int(predict_home_win),
-#         "predict_winning_probability": float(predict_winning_probability),
-#     }
-#     return jsonify(ret), 200
