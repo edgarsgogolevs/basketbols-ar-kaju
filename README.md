@@ -5,7 +5,7 @@ NBA game outcome prediction.
 ## Saturs
 
 - [Tehniskais risinājums](#Tehniskais-risinājums)
-- [Concept](#Concept)
+- [Concept](#Konceptu-modelis)
 - [Lietotāju stāsti](#Lietotāju-stāsti)
 
 
@@ -25,7 +25,7 @@ Tika pielietota client-side rendering pieeja. Piekļuve datu bāzei notiek caur 
 | Satvars               | Flask  |
 | --------------------- | ------ |
 | Programmēšanas valoda | Python |
-| Tīmekļas serveris                      | Waitress       |
+| Tīmekļa serveris      |Waitress|
 
 Pieprasījumu un atbilžu validācijai tiek pielietota Marshmallow bibliotēka.
 
@@ -45,10 +45,10 @@ Failu krātuve - Azure BLOB Storage
 Lai pareģotu basketbola spēles tika izmantota mašīnmācīšanās pieeja.
 
 
-### Concept
+## Konceptu modelis
 ![Concept model](./basketball_konceptu_modelis.excalidraw.png)
 
-### Lietotāju stāsti
+## Lietotāju stāsti
 
 | Apraksts                                                                                                                                                              | Prioritāte (1..10) |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------------:|
