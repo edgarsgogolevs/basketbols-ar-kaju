@@ -14,10 +14,13 @@ import modules.teams as teams
 PROXY = environ.get("NBA_PROXY")
 DATE_FROM = "01/01/2021"
 NBA_LEAGUE_ID = "00"
+GAMES_UPDATE_INTERVAL = 60 * 2  # 2 minutes
 
 lg = logging.getLogger("modules.predict")
 db = Db()
 last_req = 0.0
+game_finder = None
+data_frames : Union[None, list] = None
 
 def predict_game_by_game_id_model_id(
         game_id: int,
@@ -67,21 +70,30 @@ def predict_game_by_game_id_model_id(
         ret["team_away_id"] = game_info["team_away"]
     return ret
 
+def update_game_finder() -> None:
+    global game_finder, last_req, data_frames
+    if game_finder and time.time() - last_req < GAMES_UPDATE_INTERVAL:
+        return
+    kwargs = {
+        "date_from_nullable": DATE_FROM,
+        "league_id_nullable": NBA_LEAGUE_ID
+    }
+    if PROXY:
+        lg.info(f"Using proxy: {PROXY}")
+        kwargs["proxy"] = PROXY
+    game_finder = leaguegamefinder.LeagueGameFinder(**kwargs)
+    last_req = time.time()
+    data_frames = game_finder.get_data_frames()
 
 def generate_prediction(model: Any, team_home: str,
                         team_away: str) -> tuple[int, float]:
-    global last_req
+    global data_frames
     if time.time() - last_req < 0.6:
         time.sleep(0.6)
-    if PROXY:
-        lg.info(f"Using proxy: {PROXY}")
-        gamefinder = leaguegamefinder.LeagueGameFinder(
-            date_from_nullable=DATE_FROM, league_id_nullable=NBA_LEAGUE_ID, proxy=PROXY)
-    else:
-        gamefinder = leaguegamefinder.LeagueGameFinder(
-            date_from_nullable=DATE_FROM, league_id_nullable=NBA_LEAGUE_ID)
-    last_req = time.time()
-    games = gamefinder.get_data_frames()[0]
+    update_game_finder()
+    if data_frames is None:
+        raise Exception("No data frames")
+    games = data_frames[0]
     games = games[[
         "TEAM_NAME", "GAME_ID", "GAME_DATE", "MATCHUP", "WL", "PLUS_MINUS"
     ]]
