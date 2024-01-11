@@ -227,6 +227,3 @@ function setChartOptions(){
     </div>
   </div>
 </template>
-<style>
-
-</style>

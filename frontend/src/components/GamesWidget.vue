@@ -74,9 +74,9 @@ function goToGame(id) {
             <template #item="slotProps">
                 <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
                     <div class="flex align-items-center gap-2 fixed-height-60">
-                        <img :src="findLogo(slotProps.data.team_home_id)" :alt="slotProps.data.name" class="w-6 shadow-2" />
+                        <img :src="findLogo(slotProps.data.team_home_id)" :alt="slotProps.data.name" class="w-6 shadow-2 small-image" />
                         <p class="versus">VS</p>
-                        <img :src="findLogo(slotProps.data.team_away_id)" :alt="slotProps.data.name" class="w-6 shadow-2" />
+                        <img :src="findLogo(slotProps.data.team_away_id)" :alt="slotProps.data.name" class="w-6 shadow-2 small-image" />
                     </div>
                     <div class="widget-data">
                         <div class="game-abbr-grid">
@@ -106,35 +106,3 @@ function goToGame(id) {
         </Carousel>
     </div>
 </template>
-<style>
-.p-carousel-item>.border-1 {
-    height: 300px;
-    background-color: var(--color-area);
-}
-.addition-info {
-    margin-top: 1.5rem;
-}
-.game-date {
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-}
-.flex.align-items-center.gap-2.fixed-height-50 {
-    height: 60px;
-}
-.game-abbr-grid .team-conference {
-    margin-top: 1rem;
-}
-.game-abbr-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-items: center;
-    align-items: center;
-}
-
-.games-widget-header {
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    margin-top: 0.5rem;
-}
-</style>
