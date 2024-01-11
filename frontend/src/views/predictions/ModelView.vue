@@ -5,6 +5,7 @@ import modelsService from '@/services/modelsService';
 import useErrors from '@/hooks/useErrors';
 
 import Chart from 'primevue/chart';
+import GamesHistory from '@/components/GamesHistory.vue';
 
 const props = defineProps({
     id: { type: Number}
@@ -43,6 +44,21 @@ async function loadModelStats() {
         modelStats.value = response.data;
     }
 
+  } catch (error) {
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+  } finally {
+    loading.value = false;
+  }
+}
+const games = ref();
+async function loadModelHistory() {
+  loading.value = true;
+  try {
+    const response = await modelsService.getModelHistory(props.id);
+    if (response.status >= 200 && response.status < 300) {
+        games.value = response.data.history;
+    }
+    console.log(games.value);
   } catch (error) {
     errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
   } finally {
@@ -151,19 +167,19 @@ function setModelData() {
 onMounted(() => {
     loadModel();
     loadModelStats();
-
+    loadModelHistory();
     setTimeout(() => {
         chartData.value = setChartData();
         chartOptions.value = setChartOptions();
         setModelData();
-    }, 300);
+    }, 1000);
 });
 
 </script>
 <template>
   <div class="ba-main-form">
     <div class="ba-sticky-header">
-    <div class="breadcrumbs">
+        <div class="breadcrumbs">
         <div class="breadcrumb-separator">
             <i class="pi pi-home"></i>
         </div> 
@@ -192,6 +208,11 @@ onMounted(() => {
                 <h3>Description</h3>
                 <div class="ba-data justify-text ba-description">{{ model?.description }}</div>
             </div>
+        </div>
+        <div class="model-history">
+            <div class="divider-with-line"></div>
+            <h3>Model history</h3>
+            <GamesHistory :games="games" />
         </div>
         <div class="model-schema">
             <div class="divider-with-line"></div>
@@ -231,109 +252,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-<style>
-.shema.animations {
-    animation-timing-function: cubic-bezier(.25,.46,.45,.94) !important;
-    animation-duration: 2000ms !important;
-}
-.shema img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-
-}
-.badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background-color: var(--color-brand-text);
-    margin-bottom: 1rem;
-
-}
-.tiny {
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.flex.gap {
-    gap: 2rem;
-
-}
-.large-box {
-    height: 20rem;
-    width: 20rem;
-    padding: 1rem;
-    border: 1px solid var(--color-description-text);
-    border-radius: 7px;
-}
-.large-box p {
-    text-align: justify;
-    color: var(--color-description-text)
-}
-.algoritm-description .flex {
-    margin: 1rem;
-}
-.column>i {
-    color: var(--color-brand-icon);
-}
-
-.animations {
-    animation-timing-function: cubic-bezier(.25,.46,.45,.94) !important;
-    animation-duration: 1000ms !important;
-}
-.ba-data.justify-text.ba-description {
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 2) !important;
-    animation-duration: 1000ms !important;
-}
-.schema-fades .flex {
-    align-self: center;
-}
-
-.description-block {
-    border: 1px solid var(--color-description-text);
-    border-radius: 7px;
-    padding: 1rem;
-    width: 40rem;
-}
-.description-block p {
-    color: var(--color-large-text);
-}
-.description-block h4 {
-    color: var(--color-text);
-}
-.schema-fades {
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    place-items: center;
-    gap: 3rem;
-}
-
-.divider-with-line {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    width: 100%;
-    margin: 1rem 0;
-    border: 1px solid var(--color-description-text);
-    border-radius: 50%;
-}
-.padding-top-2 {
-    padding-top: 2rem;
-}
-.model-image>img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 15px;
-}
-.model-card {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1rem;
-    align-items: center;
-    justify-items: center;
-}
-</style>

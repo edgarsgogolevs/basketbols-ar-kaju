@@ -3,6 +3,8 @@ import { ref, computed } from 'vue';
 import Button from 'primevue/button';
 import Carousel from 'primevue/carousel';
 
+import router from '@/router';
+
 
 const props = defineProps({
     games: { type: Array, default: null },
@@ -56,6 +58,10 @@ function formatDate(date) {
     return d.toLocaleDateString();
 }
 
+function goToGame(id) {
+    router.push({ name: 'game', params: { id: id } });
+}
+
 </script>
 
 <template>
@@ -92,7 +98,7 @@ function formatDate(date) {
                         </div>
 
                         <div class="mt-5 flex align-items-center justify-content-center gap-2">
-                            <Button icon="pi pi-external-link" severity="secondary" rounded outlined aria-label="Search" />
+                            <Button icon="pi pi-external-link" severity="secondary" rounded outlined aria-label="Search" @click="goToGame(slotProps.data.id)" />
                         </div>
                     </div>
                 </div>

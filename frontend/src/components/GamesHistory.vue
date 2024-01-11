@@ -5,6 +5,7 @@ import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Tooltip from 'primevue/tooltip';
 import Dialog from 'primevue/dialog';
+import Tag from 'primevue/tag';
 
 import useErrors from '@/hooks/useErrors';
 import modelsService from '@/services/modelsService';
@@ -74,8 +75,8 @@ async function loadModels() {
 }
 
 onMounted(() => {
-     loadTeams();
-     loadModels();
+    loadTeams();
+    loadModels();
 });
 
 function findLogo(id) {
@@ -112,7 +113,6 @@ function formatDate(date) {
 }
 
 function goToGame(id) {
-
     router.push({ name: 'game', params: { id: id } });
 }
 
@@ -139,86 +139,92 @@ function calculateClass(homeWon, check) {
     return homeWon ? 'winner' : 'loser';
 }
 
+function boolToText(bool) {
+    if (bool === undefined || bool === null) {
+      return 'N/A';
+    }
+    return bool ? 'Home win' : 'Home lose';
+}
+
+function boolToCorrect(bool) {
+    if (bool === undefined || bool === null) {
+      return 'N/A';
+    }
+    return bool ? 'Yes' : 'No';
+}
+
 </script>
 
 <template>
-    <div>
-        <DataTable :value="props.games" paginator :rows="20" :loading="loading" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
-            <template #loading> Loading customers data. Please wait. </template>
-            <Column field="id" header="Game id" sortable style="width: 5%">
-                <template #body="item">
-                    <p class="grid-link" @click="goToGame(item.data.id)">{{ item.data.id }}</p>
-                </template>
-            </Column>
+    <div class="games-history-wrapper">
+        
+        <DataTable :value="props.games" removableSort  paginator :rows="5" :loading="loading" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
+            <Column field="game_id" header="Game id" sortable style="width: 5%"></Column>
             <Column field="game_date" header="Date" sortable style="width: 5%">
                 <template #body="item">
-                    <p>{{ formatDate(item.data.game_date) }}</p>
+                    <p>{{ formatDate(item.data.game.game_date) }}</p>
                 </template>
             </Column>
-            <Column field="team_home_id" sortable header="Team home id" style="width: 8%"></Column>
-            <Column field="team_away_id" sortable header="Team away id" style="width: 8%"></Column>
             <Column field="Match_between" header="Match between" style="width: 10%">
                 <template #body="item">
                 <div class="flex align-items-center gap-2">
-                        <img alt="flag" :src="findLogo(item.data.team_home_id)" style="width: 40px" />
+                        <img alt="flag" :src="findLogo(item.data.game.team_home_id)" style="width: 40px" />
                         <p>VS</p>
-                        <img alt="flag" :src="findLogo(item.data.team_away_id)" style="width: 40px" />
+                        <img alt="flag" :src="findLogo(item.data.game.team_away_id)" style="width: 40px" />
                     </div>
                 </template>
             </Column>
             <Column field="team_home_id" sortable header="Home vs Away" style="width: 25%">
                 <template #body="item">
                     <div class="flex align-items-center gap-2">
-                        <p class="team-home">{{ findName(item.data.team_home_id) }}</p>
+                        <p class="team-home">{{ findName(item.data.game.team_home_id) }}</p>
                         <p>VS</p>
-                        <p class="team-away">{{ findName(item.data.team_away_id) }}</p>
+                        <p class="team-away">{{ findName(item.data.game.team_away_id) }}</p>
                     </div>
                 </template>
             </Column>
-            <Column field="buttons"  header="" style="width: 8%">
+            <Column field="home_wins" header="Prediction" sortable style="width: 5%">
+                <template #body="item">
+                    <Tag v-if="item.data.home_wins" severity="success">
+                        <div class="flex align-items-center gap-2">
+                            <p>{{ boolToText(item.data.home_wins) }}</p>
+                            <i class="pi pi-thumbs-up"></i>
+                        </div>
+                    </Tag>
+                    <Tag v-else severity="danger">
+                        <div class="flex align-items-center gap-2">
+                            <p>{{ boolToText(item.data.home_wins) }}</p>
+                            <i class="pi pi-thumbs-down"></i>
+                        </div>
+                    </Tag>
+                </template>
+            </Column>
+            <Column field="prediction_correct" header="Correct" sortable style="width: 1%">
+                <template #body="item">
+                    <Tag v-if="item.data.prediction_correct" severity="success">
+                        <div class="flex align-items-center gap-2">
+                            <p>{{ boolToCorrect(item.data.prediction_correct) }}</p>
+                            <i class="pi pi-thumbs-up"></i>
+                        </div>
+                    </Tag>
+                    <Tag v-else severity="danger">
+                        <div class="flex align-items-center gap-2">
+                            <p>{{ boolToCorrect(item.data.prediction_correct) }}</p>
+                            <i class="pi pi-thumbs-down"></i>
+                        </div>
+                    </Tag>
+                </template>
+            </Column>
+            <Column field="buttons"  header="" style="width: 1%">
                 <template #body="item"> 
                     <span class="p-buttonset">
-                        <Button v-tooltip="'Open quick prediction'" outlined icon="pi pi-external-link" severity="Secondary" aria-label="Submit" @click="showDialog(item.data)" />
-                        <Button v-tooltip="'Open game page'" outlined icon="pi pi-arrow-right" severity="Secondary" aria-label="Submit" @click="goToGame(item.data.id)" />
+                        <Button v-tooltip="'Open game page'" outlined icon="pi pi-arrow-right" severity="Secondary" aria-label="Submit" @click="goToGame(item.data.game_id)" />
                     </span> 
                 </template>
             </Column>
         </DataTable>
-        <Dialog v-model:visible="visible" modal  :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-            <template #header>
-                <p>{{ `Game: ${concateAbbr(modalItem?.team_home_id, modalItem?.team_away_id)} (${modalItem.id})`}}</p>
-            </template>
-            <div class="modal-team-names">
-                <div>
-                    <p class="team-pos">Home</p>
-                <p class="team-conference" :class="[{ 'west': findConference(modalItem.team_home_id) === 'West'},
-                { 'east': findConference(modalItem.team_home_id) === 'East'}]">{{ findName(modalItem?.team_home_id) }}</p>
-                </div>
-                <p></p>
-                <div>
-                    <p class="team-pos">Away</p>
-                <p class="team-conference" :class="[{ 'west': findConference(modalItem.team_away_id) === 'West'},
-                { 'east': findConference(modalItem.team_away_id) === 'East'}]">{{ findName(modalItem?.team_away_id) }}</p>
-                </div>
-            </div>
-            <div class="modal-team-logos">
-                <img alt="flag" :src="findLogo(modalItem.team_home_id)" style="width: 120px" />
-                <p class="versus">VS</p>
-                <img alt="flag" :src="findLogo(modalItem.team_away_id)" style="width: 120px" />
-            </div>
-
-            <div class="quick-score">
-                <p>Home score: <span class="bold" :class="calculateClass(modalItem.home_won, modalItem.score_home)">{{ formatScore(modalItem.score_home) }}</span></p>
-                <i class="pi pi-calendar" style="font-size: 2rem" v-tooltip="formatDate(modalItem.game_date)" type="text"></i>
-                <p>Away score: <span class="bold" :class="calculateClass(!modalItem.home_won, modalItem.score_home)">{{ formatScore(modalItem.score_away) }}</span></p> 
-            </div>
-            <div class="prediction-info">
-                <SmallPrediction :predictions="predictionsArray" :models="models" />
-            </div>
-            <template #footer>
-                <Button label="Close" severity="secondary" @click="visible = false"  />
-                <Button label="Open game page" severity="primary"  @click="visible = false, goToGame(modalItem.id)" />
-            </template>
-        </Dialog>
     </div>
 </template>
+<style>
+
+</style>
