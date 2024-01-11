@@ -2,6 +2,7 @@ import logging
 
 from joblib import load  # type: ignore
 from modules.db import Db
+from modules.games import GAME_STATS_COLS
 
 lg = logging.getLogger("modules.models")
 db = Db()
@@ -40,10 +41,6 @@ ON gp.game_id=g.id
 WHERE gp.model_id=? AND gp.prediction_correct IS NOT NULL
 ORDER BY g.game_date DESC;
 """
-
-GAME_STATS_COLS = ['MIN', 'FGM', 'FGA', 'FG_PCT',
-       'FG3M', 'FG3A', 'FG3_PCT', 'FTM', 'FTA', 'FT_PCT', 'OREB', 'DREB',
-       'REB', 'AST', 'STL', 'BLK', 'TOV', 'PF']
 
 def calculate_model_stats(model_id: int) -> dict:
     ret = {}
