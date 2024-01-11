@@ -598,7 +598,7 @@ margin-top: 0.5rem;
   align-items: center;
   justify-items: center;
 }
-.
+
 .winner {
     color: #eecd12;
 }
@@ -707,4 +707,119 @@ margin-top: 0.5rem;
 
 .banana::after {
   content: "🍌";
+}
+
+.p-carousel-item>.border-1 {
+  height: 300px;
+  background-color: var(--color-area);
+}
+.addition-info {
+  margin-top: 1.5rem;
+}
+.game-date {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.flex.align-items-center.gap-2.fixed-height-50 {
+  height: 60px;
+}
+.game-abbr-grid .team-conference {
+  margin-top: 1rem;
+}
+.game-abbr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+}
+
+.games-widget-header {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+.span-row {
+  grid-column: span 2;
+}
+.span-row .ba-decription {
+  text-align: justify;
+}
+
+.stats-grid .team {
+  width: 100%;
+  height: 100%;
+}
+.stats-grid .team-card {
+  border-radius: 15px;
+  margin: 0;
+}
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: 1rem;
+}
+.game-points {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-brand-icon);
+  margin-bottom: 1rem;
+}
+.big-icon {
+  font-size: 3rem;
+  color: var(--color-brand-icon);
+  margin-bottom: 1rem;
+}
+.team-card-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+
+  align-items: center;
+  justify-items: center;
+}
+
+.big-game .prediction-card {
+  padding: 2rem;
+}
+.big-game .probability.ba-description {
+  margin-bottom: 1rem;
+}
+.no-margin {
+  margin-bottom: 0;
+}
+.large-game-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-items: center; 
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.large-game-info-3 {
+  display: grid;
+  grid-template-columns: 99fr 1fr 99fr;
+  justify-items: center; 
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.ba-section h3 .grid {
+  align-self: center;
+}
+.grid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.small-image {
+  width: 46px;
+  height: 46px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.score {
+  font-weight: bold;
+  font-size: 2rem;
 }

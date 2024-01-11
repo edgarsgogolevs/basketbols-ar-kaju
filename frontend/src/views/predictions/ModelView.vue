@@ -58,7 +58,6 @@ async function loadModelHistory() {
     if (response.status >= 200 && response.status < 300) {
         games.value = response.data.history;
     }
-    console.log(games.value);
   } catch (error) {
     errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
   } finally {

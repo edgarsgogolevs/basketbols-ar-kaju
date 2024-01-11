@@ -64,7 +64,7 @@ watch(() => props.predictions,
             </div>
             <ProgressBar :value="averageWinProbability().toFixed(2)*100"></ProgressBar>
         </div>
-        <p >Sepate model predictions</p>
+        <p >Separate model predictions</p>
         <div v-if="!loading" class="predictions">
             <div v-for="item in predictions" :key="item.model_id" class="prediction-card">
                 <div class="card-header">

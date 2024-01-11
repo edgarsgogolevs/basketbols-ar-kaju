@@ -32,7 +32,6 @@ async function loadGame() {
     if (response.status >= 200 && response.status < 300) {
         game.value = response.data;
     }
-    console.log(game.value);
   } catch (error) {
     console.error(error);
     errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: '111Probably your internet connection or our server lag', life: 30000 });
@@ -152,6 +151,16 @@ watch(() => game.value,
   }
 );
 
+function calculateClass(homeWon, check) {
+    if (!check) {
+      return 'bold';
+    }
+    if (homeWon === undefined || homeWon === null) {
+      return 'bold';
+    }
+    return homeWon ? 'winner' : 'loser';
+}
+
 onMounted(() => {
     loadTeams();
     loadGame();
@@ -199,6 +208,12 @@ onMounted(() => {
             <img alt="flag" :src="findLogo(game.team_home_id)" style="width: 320px" />
             <img alt="flag" :src="findLogo(game.team_away_id)" style="width: 320px" />
         </div>
+        <div class="large-game-info">
+            <p class="score" :class="calculateClass(game.home_won, game.score_home)">{{ game.score_home }}</p>
+            <p class="score" :class="calculateClass(!game.home_won, game.score_home)">{{ game.score_away }}</p>
+            <p class="score" v-if="!game.score_home"> N/A</p>
+            <p class="score" v-if="!game.score_home"> N/A</p>
+        </div>
         <div class="average-win-probability">
             <div class="flex">
                 <p class="ba-primary">Win probability</p>
@@ -209,7 +224,7 @@ onMounted(() => {
             <ProgressBar :value="averageWinProbability().toFixed(2)*100"></ProgressBar>
         </div>
         <div class="divider-with-line"></div>
-        <h3>Sepate model predictions</h3>
+        <h3>Separate model predictions</h3>
         <div v-if="!loading" class="predictions">
             <div v-for="item in predictionsArray" :key="item.model_id" class="prediction-card">
                 <div class="card-header">
@@ -238,36 +253,3 @@ onMounted(() => {
     </div>
   </div>
 </template>
-<style>
-
-.big-game .prediction-card {
-    padding: 2rem;
-}
-.big-game .probability.ba-description {
-    margin-bottom: 1rem;
-}
-.no-margin {
-    margin-bottom: 0;
-}
-.large-game-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center; 
-    align-items: center;
-    margin-bottom: 1rem;
-}
-.large-game-info-3 {
-    display: grid;
-    grid-template-columns: 99fr 1fr 99fr;
-    justify-items: center; 
-    align-items: center;
-    margin-bottom: 1rem;
-}
-.ba-section h3 .grid {
-    align-self: center;
-}
-.grid-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-</style>
