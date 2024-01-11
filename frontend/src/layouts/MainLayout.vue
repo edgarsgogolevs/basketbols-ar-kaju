@@ -4,6 +4,8 @@ import { useRoute, useRouter } from 'vue-router';
 import { useNavigatingStore } from '@/stores/useNavigatingStore';
 import Toast from 'primevue/toast';
 
+import QRCode from '@/assets/QR.jpg';
+
 import Button from 'primevue/button';
 import Breadcrumb from 'primevue/breadcrumb';
 import ProgressSpinner from 'primevue/progressspinner';
@@ -19,6 +21,9 @@ function goTo(path) {
 }
 function toRickRoll() {
   window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
+}
+function openGitHub() {
+  window.open('https://github.com/edgarsgogolevs/basketbols-ar-kaju', '_blank');
 }
 
 const visible = ref(false);
@@ -83,12 +88,16 @@ const currentTab = computed(() => {
         </div>
         <Toast />
         <Dialog v-model:visible="visible" modal header="Header" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-              <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </p>
+             <div class="qr-code">
+              <img alt="code" :src="QRCode" class="dialog-image" />
+              <div class="dialog-text">
+                <h3 class="banana">Banana</h3>
+                <p class="ba-description">This is a small project developed by RTU students as a study year project. It is a web application that uses machine learning models to predict the outcome of NBA games. The application is built using Vue.js and PrimeVue. The models are trained using Python and Scikit-learn. The data is collected using the NBA API. The source code is available on GitHub.</p>
+                <div class="ba-cover-buttons">
+                  <Button label="GitHub" @click="openGitHub"/>
+                </div>  
+              </div> 
+             </div>
         </Dialog>
         <router-view />
       </main>

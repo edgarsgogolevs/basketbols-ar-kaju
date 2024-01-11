@@ -683,3 +683,28 @@ margin-top: 0.5rem;
   min-height: 5rem;
   padding: 0.5rem;
 }
+
+.qr-code {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin: 1rem;
+  grid-template-columns: 1fr 1fr;
+
+}
+
+.dialog-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.dialog-text {
+  text-align: justify;
+}
+
+.banana::after {
+  content: "🍌";
+}

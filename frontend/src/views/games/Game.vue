@@ -2,9 +2,11 @@
 import { ref, onMounted, watch, computed } from 'vue';
 
 import TabMenu from 'primevue/tabmenu';
+import Accordion from 'primevue/accordion';
+import AccordionTab from 'primevue/accordiontab';
 
 import modelsService from '@/services/modelsService';
-import Games from '@/components/Games.vue';
+import Stats from '@/components/Stats.vue';
 import Toast from 'primevue/toast';
 import useErrors from '@/hooks/useErrors';
 import { useToast } from 'primevue/usetoast';
@@ -18,17 +20,6 @@ const errors = useErrors();
 const props = defineProps({
     id: { type: Number}
 });
-
-
-// watch(() => active.value,
-//   (newValue) => {
-//     if (newValue === 0) {
-//       loadRecentGames();
-//     } else {
-//       loadUpcomingGames();
-//     }
-//   }
-// );
 
 const loading = ref(false);
 const game = ref({});
@@ -124,6 +115,10 @@ function findModelById(id) {
     return model;
 }
 
+function formatDate(date) {
+    const d = new Date(date);
+    return d.toLocaleDateString();
+}
 
 const predictionsTempArray = ref([]);
 
@@ -164,6 +159,7 @@ onMounted(() => {
     getPrediction(props.id);
 });
 
+
 </script>
 <template>
 <div class="ba-main-form">
@@ -185,6 +181,9 @@ onMounted(() => {
         <h2>{{`Game - ${game?.id}`}}</h2>
     </div>
     <div class="ba-section big-game">
+        <div>
+                <i class="pi pi-calendar" style="font-size: 2rem" v-tooltip="formatDate(game.game_date)" type="text"></i>
+            </div>
         <h3 class="no-margin">
             <span class="grid-row">
                 <p class="team-home">{{ findName(game.team_home_id) }}</p>
@@ -193,6 +192,7 @@ onMounted(() => {
         </h3>
         <div class="large-game-info">
             <p class="bold">{{ findAbbr(game.team_home_id) }}</p>
+            
             <p class="bold">{{ findAbbr(game.team_away_id) }}</p>
         </div>
         <div class="large-game-info">
@@ -227,6 +227,14 @@ onMounted(() => {
             <Skeleton width="10rem" height="4rem" borderRadius="16px"></Skeleton>
             <Skeleton width="10rem" height="4rem" borderRadius="16px"></Skeleton>
         </div>
+        <div class="divider-with-line"></div>
+        <h3>Game stats</h3>
+        <Accordion :activeIndex="1" v-if="game.MIN">
+            <AccordionTab header="Open stats">
+                <Stats :game="game" />
+            </AccordionTab>
+        </Accordion>
+        <div v-else>Not available for the upcoming game</div>
     </div>
   </div>
 </template>
@@ -244,6 +252,13 @@ onMounted(() => {
 .large-game-info {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    justify-items: center; 
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.large-game-info-3 {
+    display: grid;
+    grid-template-columns: 99fr 1fr 99fr;
     justify-items: center; 
     align-items: center;
     margin-bottom: 1rem;

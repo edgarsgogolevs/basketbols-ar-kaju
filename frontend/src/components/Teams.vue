@@ -47,6 +47,3 @@ function goTO(link) {
         </div>
     </div>
 </template>
-<style>
-
-</style>
