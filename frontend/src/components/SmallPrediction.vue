@@ -64,7 +64,7 @@ watch(() => props.predictions,
             </div>
             <ProgressBar :value="averageWinProbability().toFixed(2)*100"></ProgressBar>
         </div>
-            <p >Sepate model predictions</p>
+        <p >Sepate model predictions</p>
         <div v-if="!loading" class="predictions">
             <div v-for="item in predictions" :key="item.model_id" class="prediction-card">
                 <div class="card-header">
@@ -84,47 +84,3 @@ watch(() => props.predictions,
         </div>
     </div>
 </template>
-
-<style>
-.card-prediction {
-    margin-bottom: 0.5rem;
-}
-.average-win-probability {
-    display: grid;
-    align-items: center;
-    grid-template-rows: 1fr 1fr;
-}
-.average-win-probability .flex {
-    align-self: center;
-    justify-self: center;
-    margin-bottom: 1rem;
-}
-
-.ba-tooltip {
-    margin-left: 0.2rem;
-    margin-right: 0.2rem;
-}
-.average-win-probability>p,
-.average-win-probability {
-    margin-bottom: 1rem;
-}
-.probability {
-    margin-bottom: 0.5rem;
-}
-.prediction-card .card-header {
-    min-height: 2rem;
-}
- .predictions {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 1rem;
-    margin-top: 1.5rem;
-    margin-bottom: 2rem;
- }
- .prediction-card {
-    border: 2px solid var(--color-border);
-    border-radius: 7px;
-    min-height: 5rem;
-    padding: 0.5rem;
- }
-</style>

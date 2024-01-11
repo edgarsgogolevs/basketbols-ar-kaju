@@ -17,6 +17,14 @@ export default {
             console.error(error);
         }
     },
+    async getModelHistory(id) {
+        try {
+            const response = await api().get(`/models/${id}/history`);
+            return response;
+        } catch (error) {
+            console.error(error);
+        }
+    },
     async getModel(id) {
         try {
             const response = await api().get(`/models/${id}`);
@@ -52,6 +60,14 @@ export default {
     async getPrediction(game, model) {
         try {
             const response = await api().get(`/predictions/predict_game/${game}/${model}`);
+            return response;
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    async getGame(id) {
+        try {
+            const response = await api().get(`/games/${id}`);
             return response;
         } catch (error) {
             console.error(error);

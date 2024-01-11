@@ -25,6 +25,12 @@ const routes = [
         component: () => import('@/views/games/Games.vue')
       },
       {
+        path: '/games/:id',
+        name: 'game',
+        props: (route) => ({ id: Number(route.params.id) }),
+        component: () => import('@/views/games/Game.vue')
+      },
+      {
         path: '/model/:id',
         name: 'model.view',
         props: (route) => ({ id: Number(route.params.id) }),
