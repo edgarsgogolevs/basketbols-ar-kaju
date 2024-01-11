@@ -6,6 +6,7 @@ NBA game outcome prediction.
 
 - [Tehniskais risinājums](#Tehniskais-risinājums)
 - [Concept](#Konceptu-modelis)
+- [Algoritms](#Algoritms)
 - [Lietotāju stāsti](#Lietotāju-stāsti)
 
 
@@ -43,6 +44,14 @@ Failu krātuve - Azure BLOB Storage
 ## Algoritms
 
 Lai pareģotu basketbola spēles tika izmantota mašīnmācīšanās pieeja.
+### XGBoostClassifier 
+Bāzē izmanto daudzus lēmumu kokus kopā. Mēs sniedzam tam datus un norādām, ko vēlamies prognozēt (vai komanda uzvarēs vai nē). Modelis mācās no šiem datiem, veido daudzus kokus, un katrs jauns koks cenšas labot iepriekšējo koku kļūdas. Galu galā mums ir ansamblis (daudzi kopā) koku, kas darbojas kopā, lai sniegtu precīzu prognozi par jaunajiem datiem. 
+### Loģistiskā regresija 
+Tiek zmantota binārajai klasifikācijai. Tā izveido vienādojumu, apvienojot svērtos lielumus, pārvērš to varbūtībā, izmantojot loģistisko funkciju, un pieņem lēmumu, pamatojoties uz šo varbūtību. Modelis tiek apmācīts, optimizējot svarus, lai tā prognozes būtu tuvākas reālajiem datiem. 
+### Support Vector Machine 
+Meklē optimālo hiperplānu klašu nodalīšanai datos. Pamatideja ir maksimizēt atšķirību starp klasēm, izmantojot atbalsta vektorus. Modelis tiek apmācīts, lai atrastu optimālo hiperplakni ar maksimālo atstarpi, un to var izmantot, lai prognozētu, vai jauni objekti pieder klasēm.
+### RandomForestClassifier 
+Izveido lēmumu koku grupu. Katrs koks tiek apmācīts, izmantojot nejaušu datu apakšparaugu un nejaušus raksturlielumus. Koku balsošanas rezultātā modelis veido prognozi par jaunajiem datiem. RandomForestClassifier ir efektīvs, izturīgs pret pārmācīšanu un spēj novērtēt pazīmju nozīmīgumu.
 
 
 ## Konceptu modelis
