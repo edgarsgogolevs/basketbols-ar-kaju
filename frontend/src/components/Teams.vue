@@ -48,31 +48,5 @@ function goTO(link) {
     </div>
 </template>
 <style>
-.divider {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-}
-.team-home-info>.flex>i {
-    margin: 0.5rem;
-}
-.color-brand-icon {
-    color: var(--color-brand-icon)
-}
-.team-home-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
-}
-.team-home-info .team-conference {
-    margin: 0;
-}
-.flex {
-    display: flex;
-    align-items: center;
-}
-.bold {
-    font-weight: bold;
-}
+
 </style>

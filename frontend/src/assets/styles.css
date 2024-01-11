@@ -344,7 +344,6 @@ main {
 }
 .team-card:hover {
   box-shadow: 0 0 11px var(--color-box-shadow-orange);
-  /* background-color: var(--color-nav-background-hover); */
   transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
 }
 .team-logo {
@@ -457,8 +456,7 @@ margin-top: 0.5rem;
   font-weight: bold;
 }
 .model-image {
-  /* background-image: url('../assets/back.gif'); */
-  background-color: rgb(48, 97, 97);
+  background-image: url('../assets/back.gif');
   padding: 0.7rem;
   max-width: 560px;
   max-height: 560px;

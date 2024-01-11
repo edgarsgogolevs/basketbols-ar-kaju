@@ -71,7 +71,7 @@ function redirectToModel(modelId) {
 
     <div class="models-card-wrapper">
       <div class="model-empty-wrapper" v-for="model in models" :key="model.id">
-        <Card @click="redirectToModel(model.id)" :allTimeAcc="66" :lastTimeAcc="30" :nominalAcc="(model.nominal_precision * 100).toFixed(0)" :image="choseImage(model.id)">
+        <Card @click="redirectToModel(model.id)" :allTimeAcc="(model.all_time_accuracy*100).toFixed(0)" :lastTimeAcc="(model.last_ten_accuracy*100).toFixed(0)" :nominalAcc="(model.nominal_precision*100).toFixed(0)" :image="choseImage(model.id)">
           <template #header>{{ model.name }}</template>
         </Card>
         

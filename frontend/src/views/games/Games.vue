@@ -33,6 +33,7 @@ async function loadUpcomingGames() {
     if (response.status >= 200 && response.status < 300) {
         games.value = response.data;
     }
+    console.log(games.value);
   } catch (error) {
     console.error(error);
     errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: '111Probably your internet connection or our server lag', life: 30000 });
