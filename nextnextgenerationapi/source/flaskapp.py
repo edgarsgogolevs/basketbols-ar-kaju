@@ -79,7 +79,7 @@ def server_error(e):
 # hello world message
 @app.route("/", methods=["GET"])
 def hello_word():
-    return {"message": "Welcome to BasketBallArKaju API"}
+    return {"message": "Welcome to BasketBallArKaju API version 7.3"}
 
 
 # clear cache after POST, PUT, DELETE

@@ -3,15 +3,21 @@ import pandas as pd
 from nba_api.stats.endpoints import leaguegamefinder  # type: ignore
 from typing import Any, Union
 import logging
+import time
+from os import environ
 
 import modules.models as models
 from modules.db import Db
 import modules.models as models
 import modules.teams as teams
 
+PROXY = environ.get("NBA_PROXY")
+DATE_FROM = "01/01/2021"
+NBA_LEAGUE_ID = "00"
+
 lg = logging.getLogger("modules.predict")
 db = Db()
-
+last_req = 0.0
 
 def predict_game_by_game_id_model_id(
         game_id: int,
@@ -64,8 +70,17 @@ def predict_game_by_game_id_model_id(
 
 def generate_prediction(model: Any, team_home: str,
                         team_away: str) -> tuple[int, float]:
-    gamefinder = leaguegamefinder.LeagueGameFinder(
-        date_from_nullable="01/01/2021", league_id_nullable="00")
+    global last_req
+    if time.time() - last_req < 0.6:
+        time.sleep(0.6)
+    if PROXY:
+        lg.info(f"Using proxy: {PROXY}")
+        gamefinder = leaguegamefinder.LeagueGameFinder(
+            date_from_nullable=DATE_FROM, league_id_nullable=NBA_LEAGUE_ID, proxy=PROXY)
+    else:
+        gamefinder = leaguegamefinder.LeagueGameFinder(
+            date_from_nullable=DATE_FROM, league_id_nullable=NBA_LEAGUE_ID)
+    last_req = time.time()
     games = gamefinder.get_data_frames()[0]
     games = games[[
         "TEAM_NAME", "GAME_ID", "GAME_DATE", "MATCHUP", "WL", "PLUS_MINUS"
