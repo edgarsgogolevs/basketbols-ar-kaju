@@ -87,7 +87,7 @@ const currentTab = computed(() => {
         </div>
         </div>
         <Toast />
-        <Dialog v-model:visible="visible" modal header="Header" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+        <Dialog v-model:visible="visible" modal header="Info" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
              <div class="qr-code">
               <img alt="code" :src="QRCode" class="dialog-image" />
               <div class="dialog-text">
