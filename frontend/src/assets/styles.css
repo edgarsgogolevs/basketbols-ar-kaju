@@ -823,3 +823,27 @@ margin-top: 0.5rem;
   font-weight: bold;
   font-size: 2rem;
 }
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.medium-image {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.zero {
+  position: absolute;
+  top: 25%;
+  left: 45%;
+}
+
+.logo-border {
+  border: 2px solid var(--color-border);
+  border-radius: 15px;
+  padding: 1rem;
+}

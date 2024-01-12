@@ -11,6 +11,8 @@ import Toast from 'primevue/toast';
 import useErrors from '@/hooks/useErrors';
 import { useToast } from 'primevue/usetoast';
 
+import Versus from '@/assets/versus.png';
+
 import Skeleton from 'primevue/skeleton';
 import ProgressBar from 'primevue/progressbar';
 
@@ -191,12 +193,15 @@ onMounted(() => {
     </div>
     <div class="ba-section big-game">
         <div>
-                <i class="pi pi-calendar" style="font-size: 2rem" v-tooltip="formatDate(game.game_date)" type="text"></i>
+            <i class="pi pi-calendar" style="font-size: 2rem" v-tooltip="formatDate(game.game_date)" type="text"></i>
+            <div class="zero">
+                <img class="medium-image" alt="versus" :src="Versus" />
             </div>
+        </div>
         <h3 class="no-margin">
             <span class="grid-row">
-                <p class="team-home">{{ findName(game.team_home_id) }}</p>
-                <p class="team-away">{{ findName(game.team_away_id) }}</p>
+                <span class="flex-center">Home team:&nbsp;<p class="team-home">{{ findName(game.team_home_id) }}</p></span>
+                <span class="flex-center">Away team:&nbsp;<p class="team-away">{{ findName(game.team_away_id) }}</p></span>
             </span>
         </h3>
         <div class="large-game-info">
@@ -205,8 +210,8 @@ onMounted(() => {
             <p class="bold">{{ findAbbr(game.team_away_id) }}</p>
         </div>
         <div class="large-game-info">
-            <img alt="flag" :src="findLogo(game.team_home_id)" style="width: 320px" />
-            <img alt="flag" :src="findLogo(game.team_away_id)" style="width: 320px" />
+            <img class="logo-border" alt="flag" :src="findLogo(game.team_home_id)" style="width: 320px" />
+            <img class="logo-border" alt="flag" :src="findLogo(game.team_away_id)" style="width: 320px" />
         </div>
         <div class="large-game-info">
             <p class="score" :class="calculateClass(game.home_won, game.score_home)">{{ game.score_home }}</p>
