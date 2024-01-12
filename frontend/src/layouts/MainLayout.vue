@@ -94,7 +94,7 @@ const currentTab = computed(() => {
                 <h3 class="banana">Banana</h3>
                 <p class="ba-description">This is a small project developed by RTU students as a study year project. It is a web application that uses machine learning models to predict the outcome of NBA games. The application is built using Vue.js and PrimeVue. The models are trained using Python and Scikit-learn. The data is collected using the NBA API. The source code is available on GitHub.</p>
                 <div class="ba-cover-buttons">
-                  <Button label="GitHub" @click="openGitHub"/>
+                  <Button label="GitHub" icon="pi pi-github" @click="openGitHub"/>
                 </div>  
               </div> 
              </div>
