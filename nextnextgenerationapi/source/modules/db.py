@@ -2,6 +2,7 @@ import os
 import pyodbc  # type: ignore
 import logging
 from typing import Any, Union
+import time
 
 # connection_string = os.environ["AZURE_SQL_CONNECTIONSTRING"]
 user = os.environ["AZURE_SQL_USER"]
@@ -14,6 +15,7 @@ connection_string = connection_string.format(user, password)
 
 class Db:
     _instance = None
+    MAX_DB_RETRY_COUNT = 40
 
     def __new__(cls):
         if not cls._instance:
@@ -27,7 +29,7 @@ class Db:
         self.establish_connection()
 
     def establish_connection(self):
-        if self.conn_retry_count > 5:
+        if self.conn_retry_count > self.MAX_DB_RETRY_COUNT:
             self.lg.error("Could not establish connection to database")
             raise Exception("Could not establish connection to database")
         try:
@@ -36,6 +38,7 @@ class Db:
         except pyodbc.Error:
             self.lg.warning(f"Could not establish connection to database. Retrying...")
             self.conn_retry_count += 1
+            time.sleep(0.2*self.conn_retry_count)
             return self.establish_connection()
         self.conn_retry_count = 0
 
