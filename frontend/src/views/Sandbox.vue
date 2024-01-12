@@ -34,7 +34,7 @@ async function loadRecent() {
       recentModels.value = response.data;
     }
   } catch (error) {
-    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag. Please restart page', life: 30000 });
   } finally {
     loading.value = false;
   }
@@ -47,7 +47,7 @@ async function loadUpcoming() {
       upcommingModels.value = response.data;
     }
   } catch (error) {
-    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag. Please restart page', life: 30000 });
   } finally {
     loading.value = false;
   }
@@ -61,7 +61,7 @@ async function loadTeams() {
     }
 
   } catch (error) {
-    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag. Please restart page', life: 30000 });
   } finally {
     loading.value = false;
   }
@@ -76,7 +76,7 @@ async function loadModels() {
 
     }
   } catch (error) {
-    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag. Please restart page', life: 30000 });
   } finally {
     loading.value = false;
   }

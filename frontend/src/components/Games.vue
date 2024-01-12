@@ -30,7 +30,7 @@ async function loadTeams() {
     }
 
   } catch (error) {
-    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag. Please restart page. Please restart page', life: 30000 });
   } finally {
     loading.value = false;
   }
@@ -52,7 +52,7 @@ async function getPrediction(id) {
     
   } catch (error) {
     console.error(error)
-    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag. Please restart page', life: 30000 });
   } finally {
     loading.value = false;
   }
@@ -67,7 +67,7 @@ async function loadModels() {
     }
 
   } catch (error) {
-    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag', life: 30000 });
+    errors.pushNotification({ severity: 'error', summary: 'Unexepected error', detail: 'Probably your internet connection or our server lag. Please restart page', life: 30000 });
   } finally {
     loading.value = false;
   }
