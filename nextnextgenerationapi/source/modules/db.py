@@ -17,11 +17,6 @@ class Db:
     _instance = None
     MAX_DB_RETRY_COUNT = 40
 
-    def __new__(cls):
-        if not cls._instance:
-            cls._instance = super(Db, cls).__new__(cls)
-        return cls._instance
-
     def __init__(self):
         self.lg = logging.getLogger("api.db")
         self.conn = None
