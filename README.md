@@ -2,6 +2,8 @@
 
 NBA game outcome prediction.
 
+[Mājaslapa](https://www.dev-goga.net/)
+
 ## Saturs
 
 - [Tehniskais risinājums](#Tehniskais-risinājums)
